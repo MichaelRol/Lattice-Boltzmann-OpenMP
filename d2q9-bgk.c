@@ -287,7 +287,7 @@ int rebound(const t_param params, t_speed* cells, t_speed* tmp_cells, int* obsta
 int collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* obstacles)
 {
   const float c_sq = 3.f; /* square of speed of sound */
-  const float w0 = 4.f / 9.f;  /* weighting factor */
+  const float w0 = 4.0f / 9.0f;  /* weighting factor */
   const float w1 = 1.f / 9.f;  /* weighting factor */
   const float w2 = 1.f / 36.f; /* weighting factor */
 
