@@ -300,8 +300,8 @@ int collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* obs
     for (int ii = 0; ii < params.nx; ii++)
     {
       /* don't consider occupied cells */
-      if (!obstacles[ii + jj*params.nx])
-      {
+     // if (!obstacles[ii + jj*params.nx])
+     // {
         /* compute local density total */
         float local_density = 0.f;
 
@@ -345,7 +345,7 @@ int collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* obs
         float d_equ[NSPEEDS];
         /* zero velocity density: weight w0 */
         d_equ[0] = w0 * local_density
-                   * (1.f - u_sq * (0.5f * c_sq));
+                   * (1.f - u_sq / (2.f * c_sq));
         /* axis speeds: weight w1 */
         d_equ[1] = w1 * local_density * (1.f + u[1] / c_sq
                                          + (u[1] * u[1]) / (2.f * c_sq * c_sq)
@@ -380,7 +380,7 @@ int collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* obs
                                                   + params.omega
                                                   * (d_equ[kk] - tmp_cells[ii + jj*params.nx].speeds[kk]);
         }
-      }
+     // }
     }
   }
 
