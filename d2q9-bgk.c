@@ -347,29 +347,29 @@ int collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* obs
         d_equ[0] = w0 * local_density
                    * (1.f - u_sq * (0.5f * c_sq));
         /* axis speeds: weight w1 */
-        d_equ[1] = w1 * local_density * (1.f + u[1] / c_sq
+        d_equ[1] = w1 * local_density * (1.f + u[1] * c_sq
                                          + (u[1] * u[1]) * (0.5f * c_sq * c_sq)
                                          - u_sq * (0.5f * c_sq));
-        d_equ[2] = w1 * local_density * (1.f + u[2] / c_sq
+        d_equ[2] = w1 * local_density * (1.f + u[2] * c_sq
                                          + (u[2] * u[2]) * (0.5f * c_sq * c_sq)
                                          - u_sq * (0.5f * c_sq));
-        d_equ[3] = w1 * local_density * (1.f + u[3] / c_sq
+        d_equ[3] = w1 * local_density * (1.f + u[3] * c_sq
                                          + (u[3] * u[3]) * (0.5f * c_sq * c_sq)
                                          - u_sq * (0.5f * c_sq));
-        d_equ[4] = w1 * local_density * (1.f + u[4] / c_sq
+        d_equ[4] = w1 * local_density * (1.f + u[4] * c_sq
                                          + (u[4] * u[4]) * (0.5f * c_sq * c_sq)
                                          - u_sq * (0.5f * c_sq));
         /* diagonal speeds: weight w2 */
-        d_equ[5] = w2 * local_density * (1.f + u[5] / c_sq
+        d_equ[5] = w2 * local_density * (1.f + u[5] * c_sq
                                          + (u[5] * u[5]) * (0.5f * c_sq * c_sq)
                                          - u_sq * (0.5f * c_sq));
-        d_equ[6] = w2 * local_density * (1.f + u[6] / c_sq
+        d_equ[6] = w2 * local_density * (1.f + u[6] * c_sq
                                          + (u[6] * u[6]) * (0.5f * c_sq * c_sq)
                                          - u_sq * (0.5f * c_sq));
-        d_equ[7] = w2 * local_density * (1.f + u[7] / c_sq
+        d_equ[7] = w2 * local_density * (1.f + u[7] * c_sq
                                          + (u[7] * u[7]) * (0.5f * c_sq * c_sq)
                                          - u_sq * (0.5f * c_sq));
-        d_equ[8] = w2 * local_density * (1.f + u[8] / c_sq
+        d_equ[8] = w2 * local_density * (1.f + u[8] * c_sq
                                          + (u[8] * u[8]) * (0.5f * c_sq * c_sq)
                                          - u_sq * (0.5f * c_sq));
 
