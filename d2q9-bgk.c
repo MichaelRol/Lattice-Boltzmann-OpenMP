@@ -92,12 +92,12 @@ int initialise(const char* paramfile, const char* obstaclefile,
 ** timestep calls, in order, the functions:
 ** accelerate_flow(), propagate(), rebound() & collision()
 */
-int timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* obstacles);
+int timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles);
 int accelerate_flow(const t_param params, t_speed* restrict cells, int* obstacles);
 int propagate(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells);
-int rebound(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* obstacles);
-int collision(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* obstacles);
-int write_values(const t_param params, t_speed* restrict cells, int* obstacles, float* av_vels);
+int rebound(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles);
+int collision(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles);
+int write_values(const t_param params, t_speed* restrict cells, int* restrict obstacles, float* av_vels);
 
 /* finalise, including freeing up allocated memory */
 int finalise(const t_param* params, t_speed** cells_ptr, t_speed** tmp_cells_ptr,
@@ -108,10 +108,10 @@ int finalise(const t_param* params, t_speed** cells_ptr, t_speed** tmp_cells_ptr
 float total_density(const t_param params, t_speed* restrict cells);
 
 /* compute average velocity */
-float av_velocity(const t_param params, t_speed* restrict cells, int* obstacles);
+float av_velocity(const t_param params, t_speed* restrict cells, int* restrict obstacles);
 
 /* calculate Reynolds number */
-float calc_reynolds(const t_param params, t_speed* restrict cells, int* obstacles);
+float calc_reynolds(const t_param params, t_speed* restrict cells, int* restrict obstacles);
 
 /* utility functions */
 void die(const char* message, const int line, const char* file);
@@ -185,7 +185,7 @@ int main(int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
-int timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* obstacles)
+int timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles)
 {
   accelerate_flow(params, cells, obstacles);
   propagate(params, cells, tmp_cells);
@@ -194,7 +194,7 @@ int timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tm
   return EXIT_SUCCESS;
 }
 
-int accelerate_flow(const t_param params, t_speed* restrict cells, int* obstacles)
+int accelerate_flow(const t_param params, t_speed* restrict cells, int* restrict obstacles)
 {
   /* compute weighting factors */
   float w1 = params.density * params.accel / 9.f;
@@ -257,7 +257,7 @@ int propagate(const t_param params, t_speed* restrict cells, t_speed* restrict t
   return EXIT_SUCCESS;
 }
 
-int rebound(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* obstacles)
+int rebound(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles)
 {
   /* loop over the cells in the grid */
   for (int jj = 0; jj < params.ny; jj++)
@@ -284,7 +284,7 @@ int rebound(const t_param params, t_speed* restrict cells, t_speed* restrict tmp
   return EXIT_SUCCESS;
 }
 
-int collision(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* obstacles)
+int collision(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles)
 {
   const float c_sq = 3.f; /* square of speed of sound */
   const float w0 = 4.0f / 9.0f;  /* weighting factor */
@@ -387,7 +387,7 @@ int collision(const t_param params, t_speed* restrict cells, t_speed* restrict t
   return EXIT_SUCCESS;
 }
 
-float av_velocity(const t_param params, t_speed* restrict cells, int* obstacles)
+float av_velocity(const t_param params, t_speed* restrict cells, int* restrict obstacles)
 {
   int    tot_cells = 0;  /* no. of cells used in calculation */
   float tot_u;          /* accumulated magnitudes of velocity for each cell */
@@ -640,7 +640,7 @@ float total_density(const t_param params, t_speed* cells)
   return total;
 }
 
-int write_values(const t_param params, t_speed* cells, int* obstacles, float* av_vels)
+int write_values(const t_param params, t_speed* restrict cells, int* restrict obstacles, float* av_vels)
 {
   FILE* fp;                     /* file pointer */
   const float c_sq = 1.f / 3.f; /* sq. of speed of sound */
