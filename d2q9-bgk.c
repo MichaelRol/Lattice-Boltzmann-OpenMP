@@ -299,7 +299,7 @@ int collision(const t_param params, t_speed* restrict cells, t_speed* restrict t
   {
     for (int ii = 0; ii < params.nx; ii++)
     {
-      /* don't consider occupied cells */
+      /* don't consider occupied cells  */
       if (!obstacles[ii + jj*params.nx])
       {
         /* compute local density total */
