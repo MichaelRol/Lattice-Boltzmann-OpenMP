@@ -93,11 +93,11 @@ int initialise(const char* paramfile, const char* obstaclefile,
 ** accelerate_flow(), propagate(), rebound() & collision()
 */
 int timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles);
-int accelerate_flow(const t_param params, t_speed* restrict cells, int* obstacles);
+int accelerate_flow(const t_param params, t_speed* restrict cells, int* restrict obstacles);
 int propagate(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells);
 int rebound(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles);
 int collision(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles);
-int write_values(const t_param params, t_speed* restrict cells, int* restrict obstacles, float* av_vels);
+int write_values(const t_param params, t_speed* restrict cells, int* restrict obstacles, float* restrict av_vels);
 
 /* finalise, including freeing up allocated memory */
 int finalise(const t_param* params, t_speed** cells_ptr, t_speed** tmp_cells_ptr,
@@ -126,8 +126,8 @@ int main(int argc, char* argv[])
   char*    paramfile = NULL;    /* name of the input parameter file */
   char*    obstaclefile = NULL; /* name of a the input obstacle file */
   t_param  params;              /* struct to hold parameter values */
-  t_speed* cells     = NULL;    /* grid containing fluid densities */
-  t_speed* tmp_cells = NULL;    /* scratch space */
+  t_speed*  cells     = NULL;    /* grid containing fluid densities */
+  t_speed*  tmp_cells = NULL;    /* scratch space */
   int*     obstacles = NULL;    /* grid indicating which cells are blocked */
   float* av_vels   = NULL;     /* a record of the av. velocity computed for each timestep */
   struct timeval timstr;        /* structure to hold elapsed time */
@@ -615,14 +615,14 @@ int finalise(const t_param* params, t_speed** cells_ptr, t_speed** tmp_cells_ptr
 }
 
 
-float calc_reynolds(const t_param params, t_speed* cells, int* obstacles)
+float calc_reynolds(const t_param params, t_speed* restrict cells, int* restrict obstacles)
 {
   const float viscosity = 1.f / 6.f * (2.f / params.omega - 1.f);
 
   return av_velocity(params, cells, obstacles) * params.reynolds_dim / viscosity;
 }
 
-float total_density(const t_param params, t_speed* cells)
+float total_density(const t_param params, t_speed* restrict cells)
 {
   float total = 0.f;  /* accumulator */
 
@@ -640,7 +640,7 @@ float total_density(const t_param params, t_speed* cells)
   return total;
 }
 
-int write_values(const t_param params, t_speed* restrict cells, int* restrict obstacles, float* av_vels)
+int write_values(const t_param params, t_speed* restrict cells, int* restrict obstacles, float* restrict av_vels)
 {
   FILE* fp;                     /* file pointer */
   const float c_sq = 1.f / 3.f; /* sq. of speed of sound */
