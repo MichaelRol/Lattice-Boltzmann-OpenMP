@@ -381,6 +381,8 @@ float collision(const t_param params, t_speed* restrict cells, t_speed* restrict
         d_equ[8] = w2 * local_density * (1.f + u[8] * c_sq
                                          + (u[8] * u[8]) * (0.5f * c_sq * c_sq)
                                          - u_sq * (0.5f * c_sq));
+        
+        local_density = 0.f;
 
         /* relaxation step */
         for (int kk = 0; kk < NSPEEDS; kk++)
@@ -388,12 +390,7 @@ float collision(const t_param params, t_speed* restrict cells, t_speed* restrict
           cells[ii + jj*params.nx].speeds[kk] = tmp_cells[ii + jj*params.nx].speeds[kk]
                                                   + params.omega
                                                   * (d_equ[kk] - tmp_cells[ii + jj*params.nx].speeds[kk]);
-        }
-
-        local_density = 0.f;
-
-        for (int kk = 0; kk < NSPEEDS; kk++)
-        {
+    
           local_density += cells[ii + jj*params.nx].speeds[kk];
         }
 
