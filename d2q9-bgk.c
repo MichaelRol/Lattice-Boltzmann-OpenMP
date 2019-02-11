@@ -189,7 +189,7 @@ int timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tm
 {
   accelerate_flow(params, cells, obstacles);
   propagate(params, cells, tmp_cells, obstacles);
-//  rebound(params, cells, tmp_cells, obstacles);
+ // rebound(params, cells, tmp_cells, obstacles);
  // collision(params, cells, tmp_cells, obstacles);
   return EXIT_SUCCESS;
 }
