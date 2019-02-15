@@ -83,9 +83,9 @@ typedef struct
 */
 
 /* load params, allocate memory, load obstacles & initialise fluid particle densities */
-int initialise(const char* paramfile, const char* obstaclefile,
-               t_param* params, t_speed** cells_ptr, t_speed** tmp_cells_ptr,
-               int** obstacles_ptr, float** av_vels_ptr);
+int initialise(const char* restrict paramfile, const char* restrict obstaclefile,
+               t_param* restrict params, t_speed** restrict cells_ptr, t_speed** restrict tmp_cells_ptr,
+               int** restrict obstacles_ptr, float** restrict av_vels_ptr);
 
 /*
 ** The main calculation methods.
@@ -100,18 +100,18 @@ float collision(const t_param params, t_speed* restrict cells, t_speed* restrict
 int write_values(const t_param params, t_speed* restrict cells, int* restrict obstacles, float* restrict av_vels);
 
 /* finalise, including freeing up allocated memory */
-int finalise(const t_param* params, t_speed** cells_ptr, t_speed** tmp_cells_ptr,
-             int** obstacles_ptr, float** av_vels_ptr);
+int finalise(const t_param* restrict params, t_speed** restrict cells_ptr, t_speed** restrict tmp_cells_ptr,
+             int** restrict obstacles_ptr, float** restrict av_vels_ptr);
 
 /* Sum all the densities in the grid.
 ** The total should remain constant from one timestep to the next. */
-float total_density(const t_param params, t_speed* cells);
+float total_density(const t_param params, t_speed* restrict cells);
 
 /* compute average velocity */
-float av_velocity(const t_param params, t_speed* cells, int* obstacles);
+float av_velocity(const t_param params, t_speed* restrict cells, int* restrict obstacles);
 
 /* calculate Reynolds number */
-float calc_reynolds(const t_param params, t_speed* cells, int* obstacles);
+float calc_reynolds(const t_param params, t_speed* restrict cells, int* restrict obstacles);
 
 /* utility functions */
 void die(const char* message, const int line, const char* file);
@@ -490,9 +490,9 @@ float av_velocity(const t_param params, t_speed* restrict cells, int* restrict o
   return tot_u / (float)tot_cells;
 }
 
-int initialise(const char* paramfile, const char* obstaclefile,
-               t_param* params, t_speed** cells_ptr, t_speed** tmp_cells_ptr,
-               int** obstacles_ptr, float** av_vels_ptr)
+int initialise(const char* restrict paramfile, const char* restrict obstaclefile,
+               t_param* restrict params, t_speed** restrict cells_ptr, t_speed** restrict tmp_cells_ptr,
+               int** restrict obstacles_ptr, float** restrict av_vels_ptr)
 {
   char   message[1024];  /* message buffer */
   FILE*   fp;            /* file pointer */
@@ -645,8 +645,8 @@ int initialise(const char* paramfile, const char* obstaclefile,
   return EXIT_SUCCESS;
 }
 
-int finalise(const t_param* params, t_speed** cells_ptr, t_speed** tmp_cells_ptr,
-             int** obstacles_ptr, float** av_vels_ptr)
+int finalise(const t_param* restrict params, t_speed** restrict cells_ptr, t_speed** restrict tmp_cells_ptr,
+             int** restrict obstacles_ptr, float** restrict av_vels_ptr)
 {
   /*
   ** free up allocated memory
@@ -667,14 +667,14 @@ int finalise(const t_param* params, t_speed** cells_ptr, t_speed** tmp_cells_ptr
 }
 
 
-float calc_reynolds(const t_param params, t_speed* cells, int* obstacles)
+float calc_reynolds(const t_param params, t_speed* restrict cells, int* restrict obstacles)
 {
   const float viscosity = 1.f / 6.f * (2.f / params.omega - 1.f);
 
   return av_velocity(params, cells, obstacles) * params.reynolds_dim / viscosity;
 }
 
-float total_density(const t_param params, t_speed* cells)
+float total_density(const t_param params, t_speed* restrict cells)
 {
   float total = 0.f;  /* accumulator */
 
@@ -692,7 +692,7 @@ float total_density(const t_param params, t_speed* cells)
   return total;
 }
 
-int write_values(const t_param params, t_speed* cells, int* obstacles, float* av_vels)
+int write_values(const t_param params, t_speed* restrict cells, int* restrict obstacles, float* restrict av_vels)
 {
   FILE* fp;                     /* file pointer */
   const float c_sq = 1.f / 3.f; /* sq. of speed of sound */
