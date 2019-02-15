@@ -92,7 +92,7 @@ int initialise(const char* paramfile, const char* obstaclefile,
 ** timestep calls, in order, the functions:
 ** accelerate_flow(), propagate(), rebound() & collision()
 */
-int timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles);
+float timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles);
 int accelerate_flow(const t_param params, t_speed* restrict cells, int* restrict obstacles);
 int propagate(const t_param params, t_speed* restrict cells, t_speed* restrict , int* restrict obstacles);
 int rebound(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles);
@@ -156,8 +156,7 @@ int main(int argc, char* argv[])
 
   for (int tt = 0; tt < params.maxIters; tt++)
   {
-    timestep(params, cells, tmp_cells, obstacles);
-    av_vels[tt] = collision(params, cells, tmp_cells, obstacles);
+    av_vels[tt] = timestep(params, cells, tmp_cells, obstacles);
     // timestep(params, tmp_cells, cells, obstacles);
     // av_vels[tt+1] = collision(params, tmp_cells, cells, obstacles);
     
@@ -188,13 +187,12 @@ int main(int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
-int timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles)
+float timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles)
 {
   accelerate_flow(params, cells, obstacles);
   propagate(params, cells, tmp_cells, obstacles);
   rebound(params, cells, tmp_cells, obstacles);
-  //collision(params, cells, tmp_cells, obstacles);
-  return EXIT_SUCCESS;
+  return collision(params, cells, tmp_cells, obstacles);
 }
 
 int accelerate_flow(const t_param params, t_speed* restrict cells, int* restrict obstacles)
@@ -235,9 +233,6 @@ int propagate(const t_param params, t_speed* restrict cells, t_speed* restrict t
   /*  loop over _all_ cells */
   for (int jj = 0; jj < params.ny; jj++)
   {
-
-
-
     for (int ii = 0; ii < params.nx; ii++)
     {
       /* determine indices of axis-direction neighbours
@@ -296,7 +291,7 @@ float collision(const t_param params, t_speed* restrict cells, t_speed* restrict
 {
   const float c_sq = 3.f; /* square of speed of sound */
   const float halfc_sq = 1.5f;
-  const float halfc_sqsq = 0.5f * c_sq * c_sq;
+  const float halfc_sqsq = 4.5f;
   const float w0 = 4.0f / 9.0f;  /* weighting factor */
   const float w1 = 1.f / 9.f;  /* weighting factor */
   const float w2 = 1.f / 36.f; /* weighting factor */
