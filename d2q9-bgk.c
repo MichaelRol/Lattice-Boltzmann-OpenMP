@@ -402,30 +402,30 @@ float collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* o
                                                   * (d_equ[kk] - tmp_cells[ii + jj*params.nx].speeds[kk]);
         }
 
-        /* local density total */
-        local_density = 0.f;
+        // /* local density total */
+        // local_density = 0.f;
 
-        for (int kk = 0; kk < NSPEEDS; kk++)
-        {
-          local_density += cells[ii + jj*params.nx].speeds[kk];
-        }
+        // for (int kk = 0; kk < NSPEEDS; kk++)
+        // {
+        //   local_density += cells[ii + jj*params.nx].speeds[kk];
+        // }
 
-        /* x-component of velocity */
-        u_x = (cells[ii + jj*params.nx].speeds[1]
-                      + cells[ii + jj*params.nx].speeds[5]
-                      + cells[ii + jj*params.nx].speeds[8]
-                      - (cells[ii + jj*params.nx].speeds[3]
-                         + cells[ii + jj*params.nx].speeds[6]
-                         + cells[ii + jj*params.nx].speeds[7]))
-                     / local_density;
-        /* compute y velocity component */
-        u_y = (cells[ii + jj*params.nx].speeds[2]
-                      + cells[ii + jj*params.nx].speeds[5]
-                      + cells[ii + jj*params.nx].speeds[6]
-                      - (cells[ii + jj*params.nx].speeds[4]
-                         + cells[ii + jj*params.nx].speeds[7]
-                         + cells[ii + jj*params.nx].speeds[8]))
-                     / local_density;
+        // /* x-component of velocity */
+        // u_x = (cells[ii + jj*params.nx].speeds[1]
+        //               + cells[ii + jj*params.nx].speeds[5]
+        //               + cells[ii + jj*params.nx].speeds[8]
+        //               - (cells[ii + jj*params.nx].speeds[3]
+        //                  + cells[ii + jj*params.nx].speeds[6]
+        //                  + cells[ii + jj*params.nx].speeds[7]))
+        //              / local_density;
+        // /* compute y velocity component */
+        // u_y = (cells[ii + jj*params.nx].speeds[2]
+        //               + cells[ii + jj*params.nx].speeds[5]
+        //               + cells[ii + jj*params.nx].speeds[6]
+        //               - (cells[ii + jj*params.nx].speeds[4]
+        //                  + cells[ii + jj*params.nx].speeds[7]
+        //                  + cells[ii + jj*params.nx].speeds[8]))
+        //              / local_density;
         /* accumulate the norm of x- and y- velocity components */
         tot_u += sqrtf((u_x * u_x) + (u_y * u_y));
         /* increase counter of inspected cells */
