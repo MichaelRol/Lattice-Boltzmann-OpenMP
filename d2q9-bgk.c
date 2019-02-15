@@ -401,7 +401,7 @@ float collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* o
         }
 
         /* local density total */
-        float local_density = 0.f;
+        local_density = 0.f;
 
         for (int kk = 0; kk < NSPEEDS; kk++)
         {
@@ -409,7 +409,7 @@ float collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* o
         }
 
         /* x-component of velocity */
-        float u_x = (cells[ii + jj*params.nx].speeds[1]
+        u_x = (cells[ii + jj*params.nx].speeds[1]
                       + cells[ii + jj*params.nx].speeds[5]
                       + cells[ii + jj*params.nx].speeds[8]
                       - (cells[ii + jj*params.nx].speeds[3]
@@ -417,7 +417,7 @@ float collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* o
                          + cells[ii + jj*params.nx].speeds[7]))
                      / local_density;
         /* compute y velocity component */
-        float u_y = (cells[ii + jj*params.nx].speeds[2]
+        u_y = (cells[ii + jj*params.nx].speeds[2]
                       + cells[ii + jj*params.nx].speeds[5]
                       + cells[ii + jj*params.nx].speeds[6]
                       - (cells[ii + jj*params.nx].speeds[4]
