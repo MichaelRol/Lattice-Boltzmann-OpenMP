@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
   for (int tt = 0; tt < params.maxIters; tt += 2)
   {
     av_vels[tt] = timestep(params, cells, tmp_cells, obstacles);
-    av_vels[tt+1] = timestep(params, cells, tmp_cells, obstacles);
+    av_vels[tt+1] = timestep(params, tmp_cells, cells, obstacles);  
 #ifdef DEBUG
     printf("==timestep: %d==\n", tt);
     printf("av velocity: %.12E\n", av_vels[tt]);
@@ -312,14 +312,22 @@ float collision(const t_param params, t_speed* restrict cells, t_speed* restrict
       {
         /* called after propagate, so taking values from scratch space
         ** mirroring, and writing into main grid */
-        cells[ii + jj*params.nx].speeds[1] = tmp_cells[ii + jj*params.nx].speeds[3];
-        cells[ii + jj*params.nx].speeds[2] = tmp_cells[ii + jj*params.nx].speeds[4];
-        cells[ii + jj*params.nx].speeds[3] = tmp_cells[ii + jj*params.nx].speeds[1];
-        cells[ii + jj*params.nx].speeds[4] = tmp_cells[ii + jj*params.nx].speeds[2];
-        cells[ii + jj*params.nx].speeds[5] = tmp_cells[ii + jj*params.nx].speeds[7];
-        cells[ii + jj*params.nx].speeds[6] = tmp_cells[ii + jj*params.nx].speeds[8];
-        cells[ii + jj*params.nx].speeds[7] = tmp_cells[ii + jj*params.nx].speeds[5];
-        cells[ii + jj*params.nx].speeds[8] = tmp_cells[ii + jj*params.nx].speeds[6];
+        float speed1 = cells[ii + jj*params.nx].speeds[1];// = tmp_cells[ii + jj*params.nx].speeds[3];
+        float speed2 = cells[ii + jj*params.nx].speeds[2];// = tmp_cells[ii + jj*params.nx].speeds[4];
+        float speed3 = cells[ii + jj*params.nx].speeds[3];// = tmp_cells[ii + jj*params.nx].speeds[1];
+        float speed4 = cells[ii + jj*params.nx].speeds[4];// = tmp_cells[ii + jj*params.nx].speeds[2];
+        float speed5 = cells[ii + jj*params.nx].speeds[5];// = tmp_cells[ii + jj*params.nx].speeds[7];
+        float speed6 = cells[ii + jj*params.nx].speeds[6];// = tmp_cells[ii + jj*params.nx].speeds[8];
+        float speed7 = cells[ii + jj*params.nx].speeds[7];// = tmp_cells[ii + jj*params.nx].speeds[5];
+        float speed8 = cells[ii + jj*params.nx].speeds[8];// = tmp_cells[ii + jj*params.nx].speeds[6];
+        tmp_cells[ii + jj*params.nx].speeds[1] = speed3;
+        tmp_cells[ii + jj*params.nx].speeds[2] = speed4;
+        tmp_cells[ii + jj*params.nx].speeds[3] = speed1;
+        tmp_cells[ii + jj*params.nx].speeds[4] = speed2;
+        tmp_cells[ii + jj*params.nx].speeds[5] = speed7;
+        tmp_cells[ii + jj*params.nx].speeds[6] = speed8;
+        tmp_cells[ii + jj*params.nx].speeds[7] = speed5;
+        tmp_cells[ii + jj*params.nx].speeds[8] = speed6;
       }
       /* don't consider occupied cells */
       if (!obstacles[ii + jj*params.nx])
@@ -399,7 +407,7 @@ float collision(const t_param params, t_speed* restrict cells, t_speed* restrict
         /* relaxation step */
         for (int kk = 0; kk < NSPEEDS; kk++)
         {
-          cells[ii + jj*params.nx].speeds[kk] = tmp_cells[ii + jj*params.nx].speeds[kk]
+          tmp_cells[ii + jj*params.nx].speeds[kk] = tmp_cells[ii + jj*params.nx].speeds[kk]
                                                   + params.omega
                                                   * (d_equ[kk] - tmp_cells[ii + jj*params.nx].speeds[kk]);
         }
