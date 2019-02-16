@@ -154,10 +154,12 @@ int main(int argc, char* argv[])
   gettimeofday(&timstr, NULL);
   tic = timstr.tv_sec + (timstr.tv_usec / 1000000.0);
 
-  for (int tt = 0; tt < params.maxIters; tt += 2)
+  for (int tt = 0; tt < params.maxIters; tt += 4)
   {
     av_vels[tt] = timestep(params, cells, tmp_cells, obstacles);
     av_vels[tt+1] = timestep(params, cells, tmp_cells, obstacles);
+    av_vels[tt+2] = timestep(params, cells, tmp_cells, obstacles);
+    av_vels[tt+3] = timestep(params, cells, tmp_cells, obstacles);
 #ifdef DEBUG
     printf("==timestep: %d==\n", tt);
     printf("av velocity: %.12E\n", av_vels[tt]);
