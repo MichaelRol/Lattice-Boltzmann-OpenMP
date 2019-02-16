@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
   for (int tt = 0; tt < params.maxIters; tt += 2)
   {
     av_vels[tt] = timestep(params, cells, tmp_cells, obstacles);
-    av_vels[tt+1] = timestep(params, tmp_cells, cells, obstacles);
+    av_vels[tt+1] = timestep(params, cells, tmp_cells, obstacles);
 #ifdef DEBUG
     printf("==timestep: %d==\n", tt);
     printf("av velocity: %.12E\n", av_vels[tt]);
@@ -399,7 +399,7 @@ float collision(const t_param params, t_speed* restrict cells, t_speed* restrict
         /* relaxation step */
         for (int kk = 0; kk < NSPEEDS; kk++)
         {
-          tmp_cells[ii + jj*params.nx].speeds[kk] = tmp_cells[ii + jj*params.nx].speeds[kk]
+          cells[ii + jj*params.nx].speeds[kk] = tmp_cells[ii + jj*params.nx].speeds[kk]
                                                   + params.omega
                                                   * (d_equ[kk] - tmp_cells[ii + jj*params.nx].speeds[kk]);
         }
