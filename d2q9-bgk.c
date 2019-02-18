@@ -78,6 +78,18 @@ typedef struct
   float speeds[NSPEEDS];
 } t_speed;
 
+// typedef struct {
+//   float* speeds0;
+//   float* speeds1;
+//   float* speeds2;
+//   float* speeds3;
+//   float* speeds4;
+//   float* speeds5;
+//   float* speeds6;
+//   float* speeds7;
+//   float* speeds8;
+// } t_speed;
+
 /*
 ** function prototypes
 */
@@ -133,16 +145,33 @@ int main(int argc, char* argv[])
   double tic, toc;              /* floating point numbers to calculate elapsed wallclock time */
   double usrtim;                /* floating point number to record elapsed user CPU time */
   double systim;                /* floating point number to record elapsed system CPU time */
+  t_speed* cells = NULL;
+  t_speed* tmp_cells = NULL;
 
-  t_speed* cells = (t_speed*)_mm_malloc(sizeof(t_speed), 64);    /* grid containing fluid densities */
-  for(int i = 0; i < 10; i++) {
-    cells->speeds[i] = (float)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  }
+  // t_speed* cells = (t_speed*)_mm_malloc(sizeof(t_speed), 64);    /* grid containing fluid densities */
+  // cells->speeds0 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // cells->speeds1 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // cells->speeds2 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // cells->speeds3 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // cells->speeds4 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // cells->speeds5 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // cells->speeds6 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // cells->speeds7 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // cells->speeds8 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
 
-  t_speed* tmp_cells = (t_speed*)_mm_malloc(sizeof(t_speed), 64);     /* scratch space */
-  for(int i = 0; i < 10; i++) {
-    tmp_cells->speeds[i] = (float)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  }
+
+  // t_speed* tmp_cells = (t_speed*)_mm_malloc(sizeof(t_speed), 64);     /* scratch space */  
+  // tmp_cells->speeds0 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // tmp_cells->speeds1 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // tmp_cells->speeds2 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // tmp_cells->speeds3 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // tmp_cells->speeds4 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // tmp_cells->speeds5 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // tmp_cells->speeds6 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // tmp_cells->speeds7 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  // tmp_cells->speeds8 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+
+
   /* parse the command line */
   if (argc != 3)
   {
@@ -195,7 +224,7 @@ int main(int argc, char* argv[])
 float timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles)
 {
   accelerate_flow(params, cells, obstacles);
-  propagate(params, cells, tmp_cells);
+  // propagate(params, cells, tmp_cells);
   // rebound(params, cells, tmp_cells, obstacles);
   const float av = collision(params, cells, tmp_cells, obstacles);
   return av;
@@ -233,36 +262,36 @@ int accelerate_flow(const t_param params, t_speed* restrict cells, int* restrict
   return EXIT_SUCCESS;
 }
 
-int propagate(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells)
-{
-  /* loop over _all_ cells */
-  for (int jj = 0; jj < params.ny; jj++)
-  {
-    for (int ii = 0; ii < params.nx; ii++)
-    {
-      /* determine indices of axis-direction neighbours
-      ** respecting periodic boundary conditions (wrap around) */
-      const int y_n = (jj + 1) % params.ny;
-      const int x_e = (ii + 1) % params.nx;
-      const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
-      const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
-      /* propagate densities from neighbouring cells, following
-      ** appropriate directions of travel and writing into
-      ** scratch space grid */
-      tmp_cells[ii + jj*params.nx].speeds[0] = cells[ii + jj*params.nx].speeds[0]; /* central cell, no movement */
-      tmp_cells[ii + jj*params.nx].speeds[1] = cells[x_w + jj*params.nx].speeds[1]; /* east */
-      tmp_cells[ii + jj*params.nx].speeds[2] = cells[ii + y_s*params.nx].speeds[2]; /* north */
-      tmp_cells[ii + jj*params.nx].speeds[3] = cells[x_e + jj*params.nx].speeds[3]; /* west */
-      tmp_cells[ii + jj*params.nx].speeds[4] = cells[ii + y_n*params.nx].speeds[4]; /* south */
-      tmp_cells[ii + jj*params.nx].speeds[5] = cells[x_w + y_s*params.nx].speeds[5]; /* north-east */
-      tmp_cells[ii + jj*params.nx].speeds[6] = cells[x_e + y_s*params.nx].speeds[6]; /* north-west */
-      tmp_cells[ii + jj*params.nx].speeds[7] = cells[x_e + y_n*params.nx].speeds[7]; /* south-west */
-      tmp_cells[ii + jj*params.nx].speeds[8] = cells[x_w + y_n*params.nx].speeds[8]; /* south-east */
-    }
-  }
+// int propagate(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells)
+// {
+//   /* loop over _all_ cells */
+//   for (int jj = 0; jj < params.ny; jj++)
+//   {
+//     for (int ii = 0; ii < params.nx; ii++)
+//     {
+//       /* determine indices of axis-direction neighbours
+//       ** respecting periodic boundary conditions (wrap around) */
+//       const int y_n = (jj + 1) % params.ny;
+//       const int x_e = (ii + 1) % params.nx;
+//       const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
+//       const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
+//       /* propagate densities from neighbouring cells, following
+//       ** appropriate directions of travel and writing into
+//       ** scratch space grid */
+//       tmp_cells[ii + jj*params.nx].speeds[0] = cells[ii + jj*params.nx].speeds[0]; /* central cell, no movement */
+//       tmp_cells[ii + jj*params.nx].speeds[1] = cells[x_w + jj*params.nx].speeds[1]; /* east */
+//       tmp_cells[ii + jj*params.nx].speeds[2] = cells[ii + y_s*params.nx].speeds[2]; /* north */
+//       tmp_cells[ii + jj*params.nx].speeds[3] = cells[x_e + jj*params.nx].speeds[3]; /* west */
+//       tmp_cells[ii + jj*params.nx].speeds[4] = cells[ii + y_n*params.nx].speeds[4]; /* south */
+//       tmp_cells[ii + jj*params.nx].speeds[5] = cells[x_w + y_s*params.nx].speeds[5]; /* north-east */
+//       tmp_cells[ii + jj*params.nx].speeds[6] = cells[x_e + y_s*params.nx].speeds[6]; /* north-west */
+//       tmp_cells[ii + jj*params.nx].speeds[7] = cells[x_e + y_n*params.nx].speeds[7]; /* south-west */
+//       tmp_cells[ii + jj*params.nx].speeds[8] = cells[x_w + y_n*params.nx].speeds[8]; /* south-east */
+//     }
+//   }
 
-  return EXIT_SUCCESS;
-}
+//   return EXIT_SUCCESS;
+// }
 
 // int rebound(const t_param params, t_speed* cells, t_speed* tmp_cells, int* obstacles)
 // {
@@ -314,6 +343,24 @@ float collision(const t_param params, t_speed* restrict cells, t_speed* restrict
   {
     for (int ii = 0; ii < params.nx; ii++)
     {
+           /* determine indices of axis-direction neighbours
+      ** respecting periodic boundary conditions (wrap around) */
+      const int y_n = (jj + 1) % params.ny;
+      const int x_e = (ii + 1) % params.nx;
+      const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
+      const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
+      /* propagate densities from neighbouring cells, following
+      ** appropriate directions of travel and writing into
+      ** scratch space grid */
+      tmp_cells[ii + jj*params.nx].speeds[0] = cells[ii + jj*params.nx].speeds[0]; /* central cell, no movement */
+      tmp_cells[ii + jj*params.nx].speeds[1] = cells[x_w + jj*params.nx].speeds[1]; /* east */
+      tmp_cells[ii + jj*params.nx].speeds[2] = cells[ii + y_s*params.nx].speeds[2]; /* north */
+      tmp_cells[ii + jj*params.nx].speeds[3] = cells[x_e + jj*params.nx].speeds[3]; /* west */
+      tmp_cells[ii + jj*params.nx].speeds[4] = cells[ii + y_n*params.nx].speeds[4]; /* south */
+      tmp_cells[ii + jj*params.nx].speeds[5] = cells[x_w + y_s*params.nx].speeds[5]; /* north-east */
+      tmp_cells[ii + jj*params.nx].speeds[6] = cells[x_e + y_s*params.nx].speeds[6]; /* north-west */
+      tmp_cells[ii + jj*params.nx].speeds[7] = cells[x_e + y_n*params.nx].speeds[7]; /* south-west */
+      tmp_cells[ii + jj*params.nx].speeds[8] = cells[x_w + y_n*params.nx].speeds[8]; /* south-east */
       /* if the cell contains an obstacle */
       if (obstacles[jj*params.nx + ii])
       {
