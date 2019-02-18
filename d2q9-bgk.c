@@ -126,8 +126,6 @@ int main(int argc, char* argv[])
   char* paramfile = NULL;    /* name of the input parameter file */
   char* obstaclefile = NULL; /* name of a the input obstacle file */
   t_param  params;              /* struct to hold parameter values */
-  t_speed* cells     = NULL;    /* grid containing fluid densities */
-  t_speed* tmp_cells = NULL;    /* scratch space */
   int* obstacles = NULL;    /* grid indicating which cells are blocked */
   float* av_vels   = NULL;     /* a record of the av. velocity computed for each timestep */
   struct timeval timstr;        /* structure to hold elapsed time */
@@ -136,6 +134,15 @@ int main(int argc, char* argv[])
   double usrtim;                /* floating point number to record elapsed user CPU time */
   double systim;                /* floating point number to record elapsed system CPU time */
 
+  t_speed* cells = (t_speed*)_mm_malloc(sizeof(t_speed), 64);    /* grid containing fluid densities */
+  for(int i = 0; i < 10; i++) {
+    cells->speeds[i] = (float)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  }
+
+  t_speed* tmp_cells = (t_speed*)_mm_malloc(sizeof(t_speed), 64);     /* scratch space */
+  for(int i = 0; i < 10; i++) {
+    tmp_cells->speeds[i] = (float)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  }
   /* parse the command line */
   if (argc != 3)
   {
