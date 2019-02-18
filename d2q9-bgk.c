@@ -224,7 +224,7 @@ int main(int argc, char* argv[])
 float timestep(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells, int* restrict obstacles)
 {
   accelerate_flow(params, cells, obstacles);
-  // propagate(params, cells, tmp_cells);
+  propagate(params, cells, tmp_cells);
   // rebound(params, cells, tmp_cells, obstacles);
   const float av = collision(params, cells, tmp_cells, obstacles);
   return av;
@@ -262,36 +262,36 @@ int accelerate_flow(const t_param params, t_speed* restrict cells, int* restrict
   return EXIT_SUCCESS;
 }
 
-// int propagate(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells)
-// {
-//   /* loop over _all_ cells */
-//   for (int jj = 0; jj < params.ny; jj++)
-//   {
-//     for (int ii = 0; ii < params.nx; ii++)
-//     {
-//       /* determine indices of axis-direction neighbours
-//       ** respecting periodic boundary conditions (wrap around) */
-//       const int y_n = (jj + 1) % params.ny;
-//       const int x_e = (ii + 1) % params.nx;
-//       const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
-//       const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
-//       /* propagate densities from neighbouring cells, following
-//       ** appropriate directions of travel and writing into
-//       ** scratch space grid */
-//       tmp_cells[ii + jj*params.nx].speeds[0] = cells[ii + jj*params.nx].speeds[0]; /* central cell, no movement */
-//       tmp_cells[ii + jj*params.nx].speeds[1] = cells[x_w + jj*params.nx].speeds[1]; /* east */
-//       tmp_cells[ii + jj*params.nx].speeds[2] = cells[ii + y_s*params.nx].speeds[2]; /* north */
-//       tmp_cells[ii + jj*params.nx].speeds[3] = cells[x_e + jj*params.nx].speeds[3]; /* west */
-//       tmp_cells[ii + jj*params.nx].speeds[4] = cells[ii + y_n*params.nx].speeds[4]; /* south */
-//       tmp_cells[ii + jj*params.nx].speeds[5] = cells[x_w + y_s*params.nx].speeds[5]; /* north-east */
-//       tmp_cells[ii + jj*params.nx].speeds[6] = cells[x_e + y_s*params.nx].speeds[6]; /* north-west */
-//       tmp_cells[ii + jj*params.nx].speeds[7] = cells[x_e + y_n*params.nx].speeds[7]; /* south-west */
-//       tmp_cells[ii + jj*params.nx].speeds[8] = cells[x_w + y_n*params.nx].speeds[8]; /* south-east */
-//     }
-//   }
+int propagate(const t_param params, t_speed* restrict cells, t_speed* restrict tmp_cells)
+{
+  /* loop over _all_ cells */
+  for (int jj = 0; jj < params.ny; jj++)
+  {
+    for (int ii = 0; ii < params.nx; ii++)
+    {
+      /* determine indices of axis-direction neighbours
+      ** respecting periodic boundary conditions (wrap around) */
+      const int y_n = (jj + 1) % params.ny;
+      const int x_e = (ii + 1) % params.nx;
+      const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
+      const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
+      /* propagate densities from neighbouring cells, following
+      ** appropriate directions of travel and writing into
+      ** scratch space grid */
+      tmp_cells[ii + jj*params.nx].speeds[0] = cells[ii + jj*params.nx].speeds[0]; /* central cell, no movement */
+      tmp_cells[ii + jj*params.nx].speeds[1] = cells[x_w + jj*params.nx].speeds[1]; /* east */
+      tmp_cells[ii + jj*params.nx].speeds[2] = cells[ii + y_s*params.nx].speeds[2]; /* north */
+      tmp_cells[ii + jj*params.nx].speeds[3] = cells[x_e + jj*params.nx].speeds[3]; /* west */
+      tmp_cells[ii + jj*params.nx].speeds[4] = cells[ii + y_n*params.nx].speeds[4]; /* south */
+      tmp_cells[ii + jj*params.nx].speeds[5] = cells[x_w + y_s*params.nx].speeds[5]; /* north-east */
+      tmp_cells[ii + jj*params.nx].speeds[6] = cells[x_e + y_s*params.nx].speeds[6]; /* north-west */
+      tmp_cells[ii + jj*params.nx].speeds[7] = cells[x_e + y_n*params.nx].speeds[7]; /* south-west */
+      tmp_cells[ii + jj*params.nx].speeds[8] = cells[x_w + y_n*params.nx].speeds[8]; /* south-east */
+    }
+  }
 
-//   return EXIT_SUCCESS;
-// }
+  return EXIT_SUCCESS;
+}
 
 // int rebound(const t_param params, t_speed* cells, t_speed* tmp_cells, int* obstacles)
 // {
@@ -343,24 +343,6 @@ float collision(const t_param params, t_speed* restrict cells, t_speed* restrict
   {
     for (int ii = 0; ii < params.nx; ii++)
     {
-           /* determine indices of axis-direction neighbours
-      ** respecting periodic boundary conditions (wrap around) */
-      const int y_n = (jj + 1) % params.ny;
-      const int x_e = (ii + 1) % params.nx;
-      const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
-      const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
-      /* propagate densities from neighbouring cells, following
-      ** appropriate directions of travel and writing into
-      ** scratch space grid */
-      tmp_cells[ii + jj*params.nx].speeds[0] = cells[ii + jj*params.nx].speeds[0]; /* central cell, no movement */
-      tmp_cells[ii + jj*params.nx].speeds[1] = cells[x_w + jj*params.nx].speeds[1]; /* east */
-      tmp_cells[ii + jj*params.nx].speeds[2] = cells[ii + y_s*params.nx].speeds[2]; /* north */
-      tmp_cells[ii + jj*params.nx].speeds[3] = cells[x_e + jj*params.nx].speeds[3]; /* west */
-      tmp_cells[ii + jj*params.nx].speeds[4] = cells[ii + y_n*params.nx].speeds[4]; /* south */
-      tmp_cells[ii + jj*params.nx].speeds[5] = cells[x_w + y_s*params.nx].speeds[5]; /* north-east */
-      tmp_cells[ii + jj*params.nx].speeds[6] = cells[x_e + y_s*params.nx].speeds[6]; /* north-west */
-      tmp_cells[ii + jj*params.nx].speeds[7] = cells[x_e + y_n*params.nx].speeds[7]; /* south-west */
-      tmp_cells[ii + jj*params.nx].speeds[8] = cells[x_w + y_n*params.nx].speeds[8]; /* south-east */
       /* if the cell contains an obstacle */
       if (obstacles[jj*params.nx + ii])
       {
