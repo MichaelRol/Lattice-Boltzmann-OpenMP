@@ -144,8 +144,8 @@ int main(int argc, char* argv[]) {
   double tic, toc;              /* floating point numbers to calculate elapsed wallclock time */
   double usrtim;                /* floating point number to record elapsed user CPU time */
   double systim;                /* floating point number to record elapsed system CPU time */
-  t_speed* cells = NULL;
-  t_speed* tmp_cells = NULL;
+  t_speeds* cells = NULL;
+  t_speeds* tmp_cells = NULL;
 
   /* parse the command line */
   if (argc != 3) {
@@ -157,6 +157,26 @@ int main(int argc, char* argv[]) {
 
   /* initialise our data structures and load values from file */
   initialise(paramfile, obstaclefile, &params, &cells, &tmp_cells, &obstacles, &av_vels);
+
+  cells->speeds0 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds1 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds2 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds3 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds4 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds5 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds6 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds7 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds8 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+
+  tmp_cells->speeds0 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds1 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds2 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds3 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds4 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds5 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds6 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds7 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds8 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
 
   /* iterate for maxIters timesteps */
   gettimeofday(&timstr, NULL);
@@ -548,9 +568,10 @@ int initialise(const char* restrict paramfile, const char* restrict obstaclefile
   */
 
   /* main grid */
-  *cells_ptr = (t_speed*)_mm_malloc(sizeof(t_speed) * (params->ny * params->nx), 64);
+  *cells_ptr = (t_speed*)_mm_malloc(sizeof(t_speeds), 64);
 
   if (*cells_ptr == NULL) die("cannot allocate memory for cells", __LINE__, __FILE__);
+
 
   /* 'helper' grid, used as scratch space */
   *tmp_cells_ptr = (t_speed*)_mm_malloc(sizeof(t_speed) * (params->ny * params->nx), 64);
