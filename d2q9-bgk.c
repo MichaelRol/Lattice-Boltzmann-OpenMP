@@ -621,7 +621,7 @@ int initialise(const char* restrict paramfile, const char* restrict obstaclefile
   ** allocate space to hold a record of the avarage velocities computed
   ** at each timestep
   */
-  *av_vels_ptr = (float*)_mm_malloc(sizeof(float) * params->maxIters);
+  *av_vels_ptr = (float*)_mm_malloc(sizeof(float) * params->maxIters, 64);
 
   return EXIT_SUCCESS;
 }
