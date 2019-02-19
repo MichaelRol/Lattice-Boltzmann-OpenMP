@@ -239,7 +239,7 @@ int main(int argc, char* argv[]) {
 
 float timestep(const t_param params, t_speeds* restrict cells, t_speeds* restrict tmp_cells, int* restrict obstacles) {
   accelerate_flow(params, cells, obstacles);
-  propagate(params, cells, tmp_cells);
+ // propagate(params, cells, tmp_cells);
   // rebound(params, cells, tmp_cells, obstacles);
   const float av = collision(params, cells, tmp_cells, obstacles);
   return av;
