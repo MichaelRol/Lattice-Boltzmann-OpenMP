@@ -104,7 +104,6 @@ typedef struct {
 int initialise(const char* restrict paramfile, const char* restrict obstaclefile,
                t_param* restrict params, t_speeds** restrict cells_ptr, t_speeds** restrict tmp_cells_ptr,
                int** restrict obstacles_ptr, float** restrict av_vels_ptr);
-
 /*
 ** The main calculation methods.
 ** timestep calls, in order, the functions:
@@ -163,7 +162,27 @@ int main(int argc, char* argv[]) {
 
   /* initialise our data structures and load values from file */
   initialise(paramfile, obstaclefile, &params, &cells, &tmp_cells, &obstacles, &av_vels);
+ /* initialise densities */
+  float w0 = params.density * 4.f / 9.f;
+  float w1 = params.density      / 9.f;
+  float w2 = params.density      / 36.f;
 
+  for (int jj = 0; jj < params.ny; jj++) {
+    for (int ii = 0; ii < params.nx; ii++) {
+      /* centre */
+      cells->speeds0[ii + jj*params.nx] = w0;
+      /* axis directions */
+      cells->speeds1[ii + jj*params.nx] = w1;
+      cells->speeds2[ii + jj*params.nx] = w1;
+      cells->speeds3[ii + jj*params.nx] = w1;
+      cells->speeds4[ii + jj*params.nx] = w1;
+      /* diagonals */
+      cells->speeds5[ii + jj*params.nx] = w2;
+      cells->speeds6[ii + jj*params.nx] = w2;
+      cells->speeds7[ii + jj*params.nx] = w2;
+      cells->speeds8[ii + jj*params.nx] = w2;
+    }
+  }
   cells->speeds0 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
   cells->speeds1 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
   cells->speeds2 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
@@ -622,28 +641,6 @@ int initialise(const char* restrict paramfile, const char* restrict obstaclefile
   *obstacles_ptr = _mm_malloc(sizeof(int) * (params->ny * params->nx), 64);
 
   if (*obstacles_ptr == NULL) die("cannot allocate column memory for obstacles", __LINE__, __FILE__);
-
-  /* initialise densities */
-  float w0 = params->density * 4.f / 9.f;
-  float w1 = params->density      / 9.f;
-  float w2 = params->density      / 36.f;
-
-  for (int jj = 0; jj < params->ny; jj++) {
-    for (int ii = 0; ii < params->nx; ii++) {
-      /* centre */
-      (*cells_ptr)->speeds0[ii + jj*params->nx] = w0;
-      /* axis directions */
-      (*cells_ptr)->speeds1[ii + jj*params->nx] = w1;
-      (*cells_ptr)->speeds2[ii + jj*params->nx] = w1;
-      (*cells_ptr)->speeds3[ii + jj*params->nx] = w1;
-      (*cells_ptr)->speeds4[ii + jj*params->nx] = w1;
-      /* diagonals */
-      (*cells_ptr)->speeds5[ii + jj*params->nx] = w2;
-      (*cells_ptr)->speeds6[ii + jj*params->nx] = w2;
-      (*cells_ptr)->speeds7[ii + jj*params->nx] = w2;
-      (*cells_ptr)->speeds8[ii + jj*params->nx] = w2;
-    }
-  }
 
   /* first set all cells in obstacle array to zero */
   for (int jj = 0; jj < params->ny; jj++) {
