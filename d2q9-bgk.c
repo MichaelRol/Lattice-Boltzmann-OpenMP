@@ -72,9 +72,9 @@ typedef struct {
 } t_param;
 
 /* struct to hold the 'speed' values */
-typedef struct {
-  float speeds[NSPEEDS];
-} t_speeds;
+// typedef struct {
+//   float speeds[NSPEEDS];
+// } t_speed;
 
 typedef struct {
   float* speeds0;
@@ -752,7 +752,7 @@ int write_values(const t_param params, t_speeds* restrict cells, int* restrict o
       } else {
       /* no obstacle */
         local_density = 0.f;
-        
+
         local_density += cells->speeds0[ii + jj*params.nx];
         local_density += cells->speeds1[ii + jj*params.nx];
         local_density += cells->speeds2[ii + jj*params.nx];
