@@ -3,7 +3,7 @@
 EXE=d2q9-bgk
 
 CC=gcc
-CFLAGS= -std=c99 -Wall -Ofast -xAVX -g
+CFLAGS= -std=c99 -Wall -Ofast -g # -xAVX
 LIBS = -lm
 
 FINAL_STATE_FILE=./final_state.dat
