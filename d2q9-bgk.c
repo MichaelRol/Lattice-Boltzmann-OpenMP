@@ -162,6 +162,26 @@ int main(int argc, char* argv[]) {
 
   /* initialise our data structures and load values from file */
   initialise(paramfile, obstaclefile, &params, &cells, &tmp_cells, &obstacles, &av_vels);
+  cells->speeds0 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds1 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds2 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds3 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds4 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds5 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds6 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds7 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  cells->speeds8 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+
+  tmp_cells->speeds0 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds1 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds2 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds3 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds4 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds5 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds6 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds7 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+  tmp_cells->speeds8 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
+
  /* initialise densities */
   float w0 = params.density * 4.f / 9.f;
   float w1 = params.density      / 9.f;
@@ -183,26 +203,6 @@ int main(int argc, char* argv[]) {
       cells->speeds8[ii + jj*params.nx] = w2;
     }
   }
-  cells->speeds0 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  cells->speeds1 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  cells->speeds2 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  cells->speeds3 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  cells->speeds4 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  cells->speeds5 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  cells->speeds6 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  cells->speeds7 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  cells->speeds8 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-
-  tmp_cells->speeds0 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  tmp_cells->speeds1 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  tmp_cells->speeds2 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  tmp_cells->speeds3 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  tmp_cells->speeds4 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  tmp_cells->speeds5 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  tmp_cells->speeds6 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  tmp_cells->speeds7 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-  tmp_cells->speeds8 = (float*)_mm_malloc(sizeof(float) * (params.ny * params.nx), 64);
-
   /* iterate for maxIters timesteps */
   gettimeofday(&timstr, NULL);
   tic = timstr.tv_sec + (timstr.tv_usec / 1000000.0);
