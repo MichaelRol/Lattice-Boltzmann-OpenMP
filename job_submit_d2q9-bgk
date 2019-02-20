@@ -16,7 +16,7 @@ echo "PBS job ID is: $PBS_JOBID"
 echo "This jobs runs on the following machines: $(cat "$PBS_NODEFILE" | uniq)"
 echo
 
-export OMP_NUM_THREADS = 1
+export OMP_NUM_THREADS = 16
 
 # Run the executable
 ./d2q9-bgk input_128x128.params obstacles_128x128.dat

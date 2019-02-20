@@ -1,0 +1,230 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+
+Begin optimization report for: main(int, char **)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at d2q9-bgk.c(190,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+   remark #15346: vector dependence: assumed OUTPUT dependence between  line 193 and  line 203
+
+   LOOP BEGIN at d2q9-bgk.c(191,5)
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+      remark #15346: vector dependence: assumed OUTPUT dependence between  line 193 and  line 203
+   LOOP END
+LOOP END
+
+LOOP BEGIN at d2q9-bgk.c(210,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at d2q9-bgk.c(260,3) inlined into d2q9-bgk.c(211,19)
+   <Peeled loop for vectorization>
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(260,3) inlined into d2q9-bgk.c(211,19)
+      remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(260,3) inlined into d2q9-bgk.c(211,19)
+   <Remainder loop for vectorization>
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(260,3) inlined into d2q9-bgk.c(212,21)
+   <Peeled loop for vectorization>
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(260,3) inlined into d2q9-bgk.c(212,21)
+      remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(260,3) inlined into d2q9-bgk.c(212,21)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at d2q9-bgk.c(497,3) inlined into d2q9-bgk.c(233,41)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at d2q9-bgk.c(498,5) inlined into d2q9-bgk.c(233,41)
+   <Peeled loop for vectorization>
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(498,5) inlined into d2q9-bgk.c(233,41)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(498,5) inlined into d2q9-bgk.c(233,41)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: collision(const t_param, t_speeds *__restrict__, t_speeds *__restrict__, int *__restrict__)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at d2q9-bgk.c(439,51)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at d2q9-bgk.c(323,5)
+      remark #15336: simd loop was not vectorized: conditional assignment to a scalar   [ d2q9-bgk.c(467,9) ]
+      remark #13379: loop was not vectorized with "simd"
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(323,5)
+      remark #15336: simd loop was not vectorized: conditional assignment to a scalar   [ d2q9-bgk.c(467,9) ]
+      remark #13379: loop was not vectorized with "simd"
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: write_values(const t_param, t_speeds *__restrict__, int *__restrict__, float *__restrict__)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at d2q9-bgk.c(729,3)
+   remark #15523: loop was not vectorized: loop control variable jj was found, but loop iteration count cannot be computed before executing the loop
+
+   LOOP BEGIN at d2q9-bgk.c(730,5)
+      remark #15523: loop was not vectorized: loop control variable ii was found, but loop iteration count cannot be computed before executing the loop
+   LOOP END
+LOOP END
+
+LOOP BEGIN at d2q9-bgk.c(783,3)
+   remark #15523: loop was not vectorized: loop control variable ii was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+===========================================================================
+
+Begin optimization report for: timestep(const t_param, t_speeds *__restrict__, t_speeds *__restrict__, int *__restrict__)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at d2q9-bgk.c(260,3) inlined into d2q9-bgk.c(244,3)
+<Peeled loop for vectorization>
+LOOP END
+
+LOOP BEGIN at d2q9-bgk.c(260,3) inlined into d2q9-bgk.c(244,3)
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at d2q9-bgk.c(260,3) inlined into d2q9-bgk.c(244,3)
+<Remainder loop for vectorization>
+LOOP END
+===========================================================================
+
+Begin optimization report for: accelerate_flow(const t_param, t_speeds *__restrict__, int *__restrict__)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at d2q9-bgk.c(260,3)
+<Peeled loop for vectorization>
+LOOP END
+
+LOOP BEGIN at d2q9-bgk.c(260,3)
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at d2q9-bgk.c(260,3)
+<Remainder loop for vectorization>
+LOOP END
+===========================================================================
+
+Begin optimization report for: av_velocity(const t_param, t_speeds *__restrict__, int *__restrict__)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at d2q9-bgk.c(497,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at d2q9-bgk.c(498,5)
+   <Peeled loop for vectorization>
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(498,5)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(498,5)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: calc_reynolds(const t_param, t_speeds *__restrict__, int *__restrict__)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at d2q9-bgk.c(497,3) inlined into d2q9-bgk.c(691,10)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at d2q9-bgk.c(498,5) inlined into d2q9-bgk.c(691,10)
+   <Peeled loop for vectorization>
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(498,5) inlined into d2q9-bgk.c(691,10)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(498,5) inlined into d2q9-bgk.c(691,10)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: total_density(const t_param, t_speeds *__restrict__)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at d2q9-bgk.c(697,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at d2q9-bgk.c(698,5)
+   <Peeled loop for vectorization>
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(698,5)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at d2q9-bgk.c(698,5)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: initialise(const char *__restrict__, const char *__restrict__, t_param *__restrict__, t_speeds **__restrict__, t_speeds **__restrict__, int **__restrict__, float **__restrict__)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at d2q9-bgk.c(626,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at d2q9-bgk.c(627,5)
+      remark #15542: loop was not vectorized: inner loop was already vectorized
+
+      LOOP BEGIN at d2q9-bgk.c(627,5)
+         remark #15300: LOOP WAS VECTORIZED
+      LOOP END
+
+      LOOP BEGIN at d2q9-bgk.c(627,5)
+      <Remainder loop for vectorization>
+      LOOP END
+   LOOP END
+LOOP END
+
+LOOP BEGIN at d2q9-bgk.c(641,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+===========================================================================
