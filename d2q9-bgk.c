@@ -317,7 +317,7 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
   ** NB the collision step is called after
   ** the propagate step and so values of interest
   ** are in the scratch-space grid */
-  #pragma omp parallel for
+  
   for (int jj = 0; jj < params.ny; jj++) {
     #pragma omp simd
     for (int ii = 0; ii < params.nx; ii++) {
