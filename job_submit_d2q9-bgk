@@ -3,7 +3,7 @@
 #PBS -N d2q9-bgq
 #PBS -j oe
 #PBS -o d2q9-bgk.out
-#PBS -q teaching
+#PBS -q veryshort
 #PBS -l nodes=1:ppn=16,walltime=00:10:00
 
 # Change the working directory (default is home directory)
