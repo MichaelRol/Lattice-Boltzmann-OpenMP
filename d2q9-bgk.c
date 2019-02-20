@@ -311,6 +311,7 @@ int propagate(const t_param params, t_speeds* restrict cells, t_speeds* restrict
   __assume_aligned(tmp_cells->speeds8, 64);
   /* loop over _all_ cells */
   for (int jj = 0; jj < params.ny; jj++) {
+    #pragma omp simd
     for (int ii = 0; ii < params.nx; ii++) {
       /* determine indices of axis-direction neighbours
       ** respecting periodic boundary conditions (wrap around) */
@@ -403,6 +404,7 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
   ** the propagate step and so values of interest
   ** are in the scratch-space grid */
   for (int jj = 0; jj < params.ny; jj++) {
+    #pragma omp simd
     for (int ii = 0; ii < params.nx; ii++) {
 
       // /* determine indices of axis-direction neighbours
