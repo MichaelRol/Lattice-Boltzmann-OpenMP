@@ -253,18 +253,18 @@ int accelerate_flow(const t_param params, t_speeds* restrict cells, int* restric
   /* modify the 2nd row of the grid */
   int jj = params.ny - 2;
 
-  __assume_aligned(cells, 64);
-  __assume_aligned(cells->speeds0, 64);
-  __assume_aligned(cells->speeds1, 64);
-  __assume_aligned(cells->speeds2, 64);
-  __assume_aligned(cells->speeds3, 64);
-  __assume_aligned(cells->speeds4, 64);
-  __assume_aligned(cells->speeds5, 64);
-  __assume_aligned(cells->speeds6, 64);
-  __assume_aligned(cells->speeds7, 64);
-  __assume_aligned(cells->speeds8, 64);
+  // __assume_aligned(cells, 64);
+  // __assume_aligned(cells->speeds0, 64);
+  // __assume_aligned(cells->speeds1, 64);
+  // __assume_aligned(cells->speeds2, 64);
+  // __assume_aligned(cells->speeds3, 64);
+  // __assume_aligned(cells->speeds4, 64);
+  // __assume_aligned(cells->speeds5, 64);
+  // __assume_aligned(cells->speeds6, 64);
+  // __assume_aligned(cells->speeds7, 64);
+  // __assume_aligned(cells->speeds8, 64);
 
-  __assume_aligned(obstacles, 64);
+  // __assume_aligned(obstacles, 64);
 
   for (int ii = 0; ii < params.nx; ii++) {
     /* if the cell is not occupied and
