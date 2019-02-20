@@ -206,7 +206,7 @@ int main(int argc, char* argv[]) {
   /* iterate for maxIters timesteps */
   gettimeofday(&timstr, NULL);
   tic = timstr.tv_sec + (timstr.tv_usec / 1000000.0);
-
+  
   for (int tt = 0; tt < params.maxIters; tt += 2) {
     av_vels[tt] = timestep(params, cells, tmp_cells, obstacles);
     av_vels[tt+1] = timestep(params, cells, tmp_cells, obstacles);  
@@ -265,7 +265,7 @@ int accelerate_flow(const t_param params, t_speeds* restrict cells, int* restric
   // __assume_aligned(cells->speeds8, 64);
 
   // __assume_aligned(obstacles, 64);
-
+  #pragma omp simd
   for (int ii = 0; ii < params.nx; ii++) {
     /* if the cell is not occupied and
     ** we don't send a negative density */
@@ -310,6 +310,7 @@ int propagate(const t_param params, t_speeds* restrict cells, t_speeds* restrict
   __assume_aligned(tmp_cells->speeds7, 64);
   __assume_aligned(tmp_cells->speeds8, 64);
   /* loop over _all_ cells */
+  #pragma omp simd
   for (int jj = 0; jj < params.ny; jj++) {
     for (int ii = 0; ii < params.nx; ii++) {
       /* determine indices of axis-direction neighbours
@@ -402,6 +403,7 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
   ** NB the collision step is called after
   ** the propagate step and so values of interest
   ** are in the scratch-space grid */
+  #pragma omp simd
   for (int jj = 0; jj < params.ny; jj++) {
     for (int ii = 0; ii < params.nx; ii++) {
 
@@ -600,6 +602,7 @@ float av_velocity(const t_param params, t_speeds* restrict cells, int* restrict 
   __assume_aligned(obstacles, 64);
 
   /* loop over all non-blocked cells */
+  #pragma omp simd
   for (int jj = 0; jj < params.ny; jj++) {
     for (int ii = 0; ii < params.nx; ii++) {
       /* ignore occupied cells */
