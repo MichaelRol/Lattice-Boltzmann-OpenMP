@@ -209,7 +209,7 @@ int main(int argc, char* argv[]) {
   
   for (int tt = 0; tt < params.maxIters; tt += 2) {
     av_vels[tt] = timestep(params, cells, tmp_cells, obstacles);
-    av_vels[tt+1] = timestep(params, cells, tmp_cells, obstacles);
+    av_vels[tt+1] = timestep(params, tmp_cells, cells, obstacles);
     // t_speeds* holder = cells;
     // cells = tmp_cells;
     // tmp_cells = holder;
