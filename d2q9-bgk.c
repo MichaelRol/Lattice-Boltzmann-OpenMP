@@ -431,8 +431,8 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
         /* called after propagate, so taking values from scratch space
         ** mirroring, and writing into main grid */
         tmp_cells->speeds0[ii + jj*params.nx] = cells->speeds0[ii + jj*params.nx];
-        tmp_cells->speeds1[ii + jj*params.nx] = cells->speeds3[ii + jj*params.nx];
-        tmp_cells->speeds2[ii + jj*params.nx] = cells->speeds4[ii + jj*params.nx];
+        tmp_cells->speeds1[ii + jj*params.nx] = cells->speeds3[x_e + jj*params.nx];
+        tmp_cells->speeds2[ii + jj*params.nx] = cells->speeds4[ii + y_n*params.nx];
         tmp_cells->speeds3[ii + jj*params.nx] = cells->speeds7[x_e + y_n*params.nx];
         tmp_cells->speeds4[ii + jj*params.nx] = cells->speeds8[x_w + y_n*params.nx];
         tmp_cells->speeds5[ii + jj*params.nx] = cells->speeds1[x_w + jj*params.nx];
