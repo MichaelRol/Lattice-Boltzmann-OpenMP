@@ -289,26 +289,26 @@ int accelerate_flow(const t_param params, t_speeds* restrict cells, int* restric
 
 int propagate(const t_param params, t_speeds* restrict cells, t_speeds* restrict tmp_cells) {
 
-   __assume_aligned(cells, 64);
-  __assume_aligned(cells->speeds0, 64);
-  __assume_aligned(cells->speeds1, 64);
-  __assume_aligned(cells->speeds2, 64);
-  __assume_aligned(cells->speeds3, 64);
-  __assume_aligned(cells->speeds4, 64);
-  __assume_aligned(cells->speeds5, 64);
-  __assume_aligned(cells->speeds6, 64);
-  __assume_aligned(cells->speeds7, 64);
-  __assume_aligned(cells->speeds8, 64);
-  __assume_aligned(tmp_cells, 64);
-  __assume_aligned(tmp_cells->speeds0, 64);
-  __assume_aligned(tmp_cells->speeds1, 64);
-  __assume_aligned(tmp_cells->speeds2, 64);
-  __assume_aligned(tmp_cells->speeds3, 64);
-  __assume_aligned(tmp_cells->speeds4, 64);
-  __assume_aligned(tmp_cells->speeds5, 64);
-  __assume_aligned(tmp_cells->speeds6, 64);
-  __assume_aligned(tmp_cells->speeds7, 64);
-  __assume_aligned(tmp_cells->speeds8, 64);
+  //  __assume_aligned(cells, 64);
+  // __assume_aligned(cells->speeds0, 64);
+  // __assume_aligned(cells->speeds1, 64);
+  // __assume_aligned(cells->speeds2, 64);
+  // __assume_aligned(cells->speeds3, 64);
+  // __assume_aligned(cells->speeds4, 64);
+  // __assume_aligned(cells->speeds5, 64);
+  // __assume_aligned(cells->speeds6, 64);
+  // __assume_aligned(cells->speeds7, 64);
+  // __assume_aligned(cells->speeds8, 64);
+  // __assume_aligned(tmp_cells, 64);
+  // __assume_aligned(tmp_cells->speeds0, 64);
+  // __assume_aligned(tmp_cells->speeds1, 64);
+  // __assume_aligned(tmp_cells->speeds2, 64);
+  // __assume_aligned(tmp_cells->speeds3, 64);
+  // __assume_aligned(tmp_cells->speeds4, 64);
+  // __assume_aligned(tmp_cells->speeds5, 64);
+  // __assume_aligned(tmp_cells->speeds6, 64);
+  // __assume_aligned(tmp_cells->speeds7, 64);
+  // __assume_aligned(tmp_cells->speeds8, 64);
   /* loop over _all_ cells */
   for (int jj = 0; jj < params.ny; jj++) {
     for (int ii = 0; ii < params.nx; ii++) {
