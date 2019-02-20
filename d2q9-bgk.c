@@ -209,7 +209,7 @@ int main(int argc, char* argv[]) {
 
   for (int tt = 0; tt < params.maxIters; tt += 2) {
     av_vels[tt] = timestep(params, cells, tmp_cells, obstacles);
-    av_vels[tt+1] = timestep(params, cells, tmp_cells, obstacles);  
+    av_vels[tt+1] = timestep(params, tmp_cells, cells, obstacles);  
 #ifdef DEBUG
     printf("==timestep: %d==\n", tt);
     printf("av velocity: %.12E\n", av_vels[tt]);
@@ -520,33 +520,33 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
                                          - u_sqhalfc_sq);
 
         /* relaxation step */
-        cells->speeds0[ii + jj*params.nx] = tmp_cells->speeds0[ii + jj*params.nx]
+        tmp_cells->speeds0[ii + jj*params.nx] = cells->speeds0[ii + jj*params.nx]
                                                 + params.omega
-                                                * (d_equ[0] - tmp_cells->speeds0[ii + jj*params.nx]);
-        cells->speeds1[ii + jj*params.nx] = tmp_cells->speeds1[ii + jj*params.nx]
+                                                * (d_equ[0] - cells->speeds0[ii + jj*params.nx]);
+        tmp_cells->speeds1[ii + jj*params.nx] = cells->speeds1[x_w + jj*params.nx]
                                                 + params.omega
-                                                * (d_equ[1] - tmp_cells->speeds1[ii + jj*params.nx]);
-        cells->speeds2[ii + jj*params.nx] = tmp_cells->speeds2[ii + jj*params.nx]
+                                                * (d_equ[1] - cells->speeds1[x_w + jj*params.nx]);
+        tmp_cells->speeds2[ii + jj*params.nx] = cells->speeds2[ii + y_s*params.nx]
                                                 + params.omega
-                                                * (d_equ[2] - tmp_cells->speeds2[ii + jj*params.nx]);
-        cells->speeds3[ii + jj*params.nx] = tmp_cells->speeds3[ii + jj*params.nx]
+                                                * (d_equ[2] - cells->speeds2[ii + y_s*params.nx]);
+        tmp_cells->speeds3[ii + jj*params.nx] = cells->speeds3[x_e + jj*params.nx]
                                                 + params.omega
-                                                * (d_equ[3] - tmp_cells->speeds3[ii + jj*params.nx]);
-        cells->speeds4[ii + jj*params.nx] = tmp_cells->speeds4[ii + jj*params.nx]
+                                                * (d_equ[3] - cells->speeds3[x_e + jj*params.nx]);
+        tmp_cells->speeds4[ii + jj*params.nx] = cells->speeds4[ii + y_n*params.nx]
                                                 + params.omega
-                                                * (d_equ[4] - tmp_cells->speeds4[ii + jj*params.nx]);
-        cells->speeds5[ii + jj*params.nx] = tmp_cells->speeds5[ii + jj*params.nx]
+                                                * (d_equ[4] - cells->speeds4[ii + y_n*params.nx]);
+        tmp_cells->speeds5[ii + jj*params.nx] = cells->speeds5[x_w + y_s*params.nx]
                                                 + params.omega
-                                                * (d_equ[5] - tmp_cells->speeds5[ii + jj*params.nx]);
-        cells->speeds6[ii + jj*params.nx] = tmp_cells->speeds6[ii + jj*params.nx]
+                                                * (d_equ[5] - cells->speeds5[x_w + y_s*params.nx]);
+        tmp_cells->speeds6[ii + jj*params.nx] = cells->speeds6[x_e + y_s*params.nx]
                                                 + params.omega
-                                                * (d_equ[6] - tmp_cells->speeds6[ii + jj*params.nx]);
-        cells->speeds7[ii + jj*params.nx] = tmp_cells->speeds7[ii + jj*params.nx]
+                                                * (d_equ[6] - cells->speeds6[x_e + y_s*params.nx]);
+        tmp_cells->speeds7[ii + jj*params.nx] = cells->speeds7[x_e + y_n*params.nx]
                                                 + params.omega
-                                                * (d_equ[7] - tmp_cells->speeds7[ii + jj*params.nx]);
-        cells->speeds8[ii + jj*params.nx] = tmp_cells->speeds8[ii + jj*params.nx]
+                                                * (d_equ[7] - cells->speeds7[x_e + y_n*params.nx]);
+        tmp_cells->speeds8[ii + jj*params.nx] = cells->speeds8[x_w + y_n*params.nx]
                                                 + params.omega
-                                                * (d_equ[8] - tmp_cells->speeds8[ii + jj*params.nx]);
+                                                * (d_equ[8] - cells->speeds8[x_w + y_n*params.nx]);
 
         // /* local density total */
         // local_density = 0.f;
