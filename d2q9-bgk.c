@@ -206,10 +206,10 @@ int main(int argc, char* argv[]) {
   /* iterate for maxIters timesteps */
   gettimeofday(&timstr, NULL);
   tic = timstr.tv_sec + (timstr.tv_usec / 1000000.0);
-  #pragma omp simd
-  for (int tt = 0; tt < params.maxIters; tt += 2) {
+  
+  for (int tt = 0; tt < params.maxIters; tt++) {
     av_vels[tt] = timestep(params, cells, tmp_cells, obstacles);
-    av_vels[tt+1] = timestep(params, tmp_cells, cells, obstacles);  
+    cells = tmp_cells;
 #ifdef DEBUG
     printf("==timestep: %d==\n", tt);
     printf("av velocity: %.12E\n", av_vels[tt]);
