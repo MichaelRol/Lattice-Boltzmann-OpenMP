@@ -441,7 +441,7 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
         tmp_cells->speeds8[ii + jj*params.nx] = cells->speeds6[x_e + y_s*params.nx];
       }
       /* don't consider occupied cells */
-      if (!obstacles[ii + jj*params.nx]) {
+      else {
         /* compute local density total */
         float local_density = 0.f;
 
