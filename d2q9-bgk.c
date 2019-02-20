@@ -227,7 +227,7 @@ int main(int argc, char* argv[]) {
 
   /* write final values and free memory */
   printf("==done==\n");
-  printf("Reynolds number:\t\t%.12E\n", calc_reynolds(params, tmp_cells, obstacles));
+  printf("Reynolds number:\t\t%.12E\n", calc_reynolds(params, cells, obstacles));
   printf("Elapsed time:\t\t\t%.6lf (s)\n", toc - tic);
   printf("Elapsed user CPU time:\t\t%.6lf (s)\n", usrtim);
   printf("Elapsed system CPU time:\t%.6lf (s)\n", systim);
@@ -433,10 +433,10 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
         tmp_cells->speeds0[ii + jj*params.nx] = cells->speeds0[ii + jj*params.nx];
         tmp_cells->speeds1[ii + jj*params.nx] = cells->speeds3[x_e + jj*params.nx];
         tmp_cells->speeds2[ii + jj*params.nx] = cells->speeds4[ii + y_n*params.nx];
-        tmp_cells->speeds3[ii + jj*params.nx] = cells->speeds7[x_e + y_n*params.nx];
-        tmp_cells->speeds4[ii + jj*params.nx] = cells->speeds8[x_w + y_n*params.nx];
-        tmp_cells->speeds5[ii + jj*params.nx] = cells->speeds1[x_w + jj*params.nx];
-        tmp_cells->speeds6[ii + jj*params.nx] = cells->speeds2[ii + y_s*params.nx];
+        tmp_cells->speeds3[ii + jj*params.nx] = cells->speeds1[x_w + jj*params.nx];
+        tmp_cells->speeds4[ii + jj*params.nx] = cells->speeds2[ii + y_s*params.nx];
+        tmp_cells->speeds5[ii + jj*params.nx] = cells->speeds7[x_e + y_n*params.nx];
+        tmp_cells->speeds6[ii + jj*params.nx] = cells->speeds8[x_w + y_n*params.nx];
         tmp_cells->speeds7[ii + jj*params.nx] = cells->speeds5[x_w + y_s*params.nx];
         tmp_cells->speeds8[ii + jj*params.nx] = cells->speeds6[x_e + y_s*params.nx];
       }
