@@ -1,9 +1,0 @@
-/cm/local/apps/torque/4.2.4.1/spool/mom_priv/jobs/8116690.master.cm.cluster.SC: line 1: Running: command not found
-/cm/local/apps/torque/4.2.4.1/spool/mom_priv/jobs/8116690.master.cm.cluster.SC: line 2: Time: command not found
-/cm/local/apps/torque/4.2.4.1/spool/mom_priv/jobs/8116690.master.cm.cluster.SC: line 3: Directory: command not found
-/cm/local/apps/torque/4.2.4.1/spool/mom_priv/jobs/8116690.master.cm.cluster.SC: line 4: PBS: command not found
-/cm/local/apps/torque/4.2.4.1/spool/mom_priv/jobs/8116690.master.cm.cluster.SC: line 5: This: command not found
-/cm/local/apps/torque/4.2.4.1/spool/mom_priv/jobs/8116690.master.cm.cluster.SC: line 7: ==done==: command not found
-/cm/local/apps/torque/4.2.4.1/spool/mom_priv/jobs/8116690.master.cm.cluster.SC: line 8: Reynolds: command not found
-/cm/local/apps/torque/4.2.4.1/spool/mom_priv/jobs/8116690.master.cm.cluster.SC: line 9: syntax error near unexpected token `('
-/cm/local/apps/torque/4.2.4.1/spool/mom_priv/jobs/8116690.master.cm.cluster.SC: line 9: `Elapsed time:			21.443995 (s)'
