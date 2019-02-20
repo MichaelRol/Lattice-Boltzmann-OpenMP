@@ -265,7 +265,7 @@ int accelerate_flow(const t_param params, t_speeds* restrict cells, int* restric
   // __assume_aligned(cells->speeds8, 64);
 
   // __assume_aligned(obstacles, 64);
-
+  #pragma omp simd
   for (int ii = 0; ii < params.nx; ii++) {
     /* if the cell is not occupied and
     ** we don't send a negative density */
