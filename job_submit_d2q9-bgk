@@ -3,8 +3,8 @@
 #PBS -N d2q9-bgq
 #PBS -j oe
 #PBS -o d2q9-bgk.out
-#PBS -q teaching
-#PBS -l nodes=1:ppn=16,walltime=00:10:00
+#PBS -q veryshort
+#PBS -l nodes=1:ppn=16,walltime=00:00:30
 
 # Change the working directory (default is home directory)
 cd "$PBS_O_WORKDIR"
@@ -21,3 +21,5 @@ export OMP_PROC_BIND=true
 
 # Run the executable
 ./d2q9-bgk input_128x128.params obstacles_128x128.dat
+# ./d2q9-bgk input_256x256.params obstacles_256x256.dat
+# ./d2q9-bgk input_1024x1024.params obstacles_1024x1024.dat
