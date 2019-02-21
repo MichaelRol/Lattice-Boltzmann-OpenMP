@@ -154,9 +154,10 @@ int main(int argc, char* argv[])
   gettimeofday(&timstr, NULL);
   tic = timstr.tv_sec + (timstr.tv_usec / 1000000.0);
 
-  for (int tt = 0; tt < params.maxIters; tt++)
+  for (int tt = 0; tt < params.maxIters; tt += 2)
   {
     av_vels[tt] = timestep(params, cells, tmp_cells, obstacles);
+    av_vels[tt + 2] = timestep(params, tmp_cells, cells, obstacles);
 #ifdef DEBUG
     printf("==timestep: %d==\n", tt);
     printf("av velocity: %.12E\n", av_vels[tt]);
@@ -345,21 +346,24 @@ float collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* o
           local_density += tmp_cells[ii + jj*params.nx].speeds[kk];
         }
 
-        /* compute x velocity component */
-        float u_x = (tmp_cells[ii + jj*params.nx].speeds[1]
-                      + tmp_cells[ii + jj*params.nx].speeds[5]
-                      + tmp_cells[ii + jj*params.nx].speeds[8]
-                      - (tmp_cells[ii + jj*params.nx].speeds[3]
-                         + tmp_cells[ii + jj*params.nx].speeds[6]
-                         + tmp_cells[ii + jj*params.nx].speeds[7]))
+        /* compute x velocity c      const int y_n = (jj + 1) % params.ny;
+      const int x_e = (ii + 1) % params.nx;
+      const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
+      const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);omponent */
+        float u_x = (speed1
+                      + speed5
+                      + speed8
+                      - (speed3
+                         + speed6
+                         + speed7))
                      / local_density;
         /* compute y velocity component */
-        float u_y = (tmp_cells[ii + jj*params.nx].speeds[2]
-                      + tmp_cells[ii + jj*params.nx].speeds[5]
-                      + tmp_cells[ii + jj*params.nx].speeds[6]
-                      - (tmp_cells[ii + jj*params.nx].speeds[4]
-                         + tmp_cells[ii + jj*params.nx].speeds[7]
-                         + tmp_cells[ii + jj*params.nx].speeds[8]))
+        float u_y = (speed2
+                      + speed5
+                      + speed6
+                      - (speed4
+                         + speed7
+                         + speed8))
                      / local_density;
 
         /* velocity squared */

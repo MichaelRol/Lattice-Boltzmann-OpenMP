@@ -381,7 +381,10 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
         /* velocity squared */
         const float u_sq = u_x * u_x + u_y * u_y;
         const float u_sqhalfc_sq = u_sq * halfc_sq;
-
+      const int y_n = (jj + 1) % params.ny;
+      const int x_e = (ii + 1) % params.nx;
+      const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
+      const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
         /* directional velocity components */
         float u[NSPEEDS];
         u[1] =   u_x;        /* east */
