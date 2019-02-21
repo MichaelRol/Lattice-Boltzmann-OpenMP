@@ -338,8 +338,35 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
       const float speed6 = cells->speeds6[x_e + y_s*params.nx];
       const float speed7 = cells->speeds7[x_e + y_n*params.nx];
       const float speed8 = cells->speeds8[x_w + y_n*params.nx];
+       
+       /* compute local density total */
+        float local_density = 0.f;
 
-      
+        local_density += speed0;
+        local_density += speed1;
+        local_density += speed2;
+        local_density += speed3;
+        local_density += speed4;
+        local_density += speed5;
+        local_density += speed6;
+        local_density += speed7;
+        local_density += speed8;
+              /* compute x velocity component */
+        const float u_x = (speed1
+                      + speed5
+                      + speed8
+                      - (speed3
+                         + speed6
+                         + speed7))
+                     / local_density;
+        /* compute y velocity component */
+        const float u_y = (speed2
+                      + speed5
+                      + speed6
+                      - (speed4
+                         + speed7
+                         + speed8))
+                     / local_density;
 
       /* if the cell contains an obstacle */
       if (obstacles[jj*params.nx + ii]) {
@@ -357,35 +384,8 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
       }
       /* don't consider occupied cells */
       else {
-        /* compute local density total */
-        float local_density = 0.f;
+       
 
-        local_density += speed0;
-        local_density += speed1;
-        local_density += speed2;
-        local_density += speed3;
-        local_density += speed4;
-        local_density += speed5;
-        local_density += speed6;
-        local_density += speed7;
-        local_density += speed8;
-        
-        /* compute x velocity component */
-        const float u_x = (speed1
-                      + speed5
-                      + speed8
-                      - (speed3
-                         + speed6
-                         + speed7))
-                     / local_density;
-        /* compute y velocity component */
-        const float u_y = (speed2
-                      + speed5
-                      + speed6
-                      - (speed4
-                         + speed7
-                         + speed8))
-                     / local_density;
 
         /* velocity squared */
         const float u_sq = u_x * u_x + u_y * u_y;
@@ -463,12 +463,15 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
                                                 + params.omega
                                                 * (d_equ[8] - speed8);
 
+      
+      }
         /* accumulate the norm of x- and y- velocity components */
         tot_u += sqrtf((u_x * u_x) + (u_y * u_y));
         /* increase counter of inspected cells */
-        ++tot_cells;
+       
+
+      tot_cells = (!obstacles[jj*params.nx + ii]) ? (tot_cells + 1) : (tot_cells + 0);
       
-      }
     }
   }
 
