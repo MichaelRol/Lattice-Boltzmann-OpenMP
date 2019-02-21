@@ -120,10 +120,6 @@ int write_values(const t_param params, t_speeds* restrict cells, int* restrict o
 int finalise(const t_param* restrict params, t_speeds** restrict cells_ptr, t_speeds** restrict tmp_cells_ptr,
              int** restrict obstacles_ptr, float** restrict av_vels_ptr);
 
-/* Sum all the densities in the grid.
-** The total should remain constant from one timestep to the next. */
-float total_density(const t_param params, t_speeds* restrict cells);
-
 /* compute average velocity */
 float av_velocity(const t_param params, t_speeds* restrict cells, int* restrict obstacles);
 
@@ -257,7 +253,7 @@ int accelerate_flow(const t_param params, t_speeds* restrict cells, int* restric
   /* modify the 2nd row of the grid */
   int jj = params.ny - 2;
 
-  #pragma omp parallel for
+  #pragma omp simd
   for (int ii = 0; ii < params.nx; ii++) {
     /* if the cell is not occupied and
     ** we don't send a negative density */
@@ -340,20 +336,19 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
       const float speed7 = cells->speeds7[x_e + y_n*params.nx];
       const float speed8 = cells->speeds8[x_w + y_n*params.nx];
        
-       /* compute local density total */
-        float local_density = 0.f;
-
-        local_density += speed0;
-        local_density += speed1;
-        local_density += speed2;
-        local_density += speed3;
-        local_density += speed4;
-        local_density += speed5;
-        local_density += speed6;
-        local_density += speed7;
-        local_density += speed8;
-              /* compute x velocity component */
-        const float u_x = (speed1
+      /* compute local density total */
+      float local_density = 0.f;
+      local_density += speed0;
+      local_density += speed1;
+      local_density += speed2;
+      local_density += speed3;
+      local_density += speed4;
+      local_density += speed5;
+      local_density += speed6;
+      local_density += speed7;
+      local_density += speed8;
+      /* compute x velocity component */
+      const float u_x = (speed1
                       + speed5
                       + speed8
                       - (speed3
@@ -361,7 +356,7 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
                          + speed7))
                      / local_density;
         /* compute y velocity component */
-        const float u_y = (speed2
+      const float u_y = (speed2
                       + speed5
                       + speed6
                       - (speed4
@@ -385,9 +380,6 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
       }
       /* don't consider occupied cells */
       else {
-       
-
-
         /* velocity squared */
         const float u_sq = u_x * u_x + u_y * u_y;
         const float u_sqhalfc_sq = u_sq * halfc_sq;
@@ -468,10 +460,6 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
       }
       
       tot_u += (!obstacles[jj*params.nx + ii]) ? sqrtf((u_x * u_x) + (u_y * u_y)) : 0;
-      /* accumulate the norm of x- and y- velocity components */
-      //tot_u = tot_u + (sqrtf((u_x * u_x) + (u_y * u_y))*(float)(!obstacles[jj*params.nx + ii]));
-      /* increase counter of inspected cells */
-       
       tot_cells += (!obstacles[jj*params.nx + ii]) ? 1 : 0;
       
     }
@@ -695,26 +683,6 @@ float calc_reynolds(const t_param params, t_speeds* restrict cells, int* restric
   const float viscosity = 1.f / 6.f * (2.f / params.omega - 1.f);
 
   return av_velocity(params, cells, obstacles) * params.reynolds_dim / viscosity;
-}
-
-float total_density(const t_param params, t_speeds* restrict cells) {
-  float total = 0.f;  /* accumulator */
-
-  for (int jj = 0; jj < params.ny; jj++) {
-    for (int ii = 0; ii < params.nx; ii++) {
-      total += cells->speeds0[ii + jj*params.nx];
-      total += cells->speeds1[ii + jj*params.nx];
-      total += cells->speeds2[ii + jj*params.nx];
-      total += cells->speeds3[ii + jj*params.nx];
-      total += cells->speeds4[ii + jj*params.nx];
-      total += cells->speeds5[ii + jj*params.nx];
-      total += cells->speeds6[ii + jj*params.nx];
-      total += cells->speeds7[ii + jj*params.nx];
-      total += cells->speeds8[ii + jj*params.nx];
-    }
-  }
-
-  return total;
 }
 
 int write_values(const t_param params, t_speeds* restrict cells, int* restrict obstacles, float* restrict av_vels) {
