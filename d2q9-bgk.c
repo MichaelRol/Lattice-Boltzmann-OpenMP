@@ -305,19 +305,34 @@ float collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* o
   {
     for (int ii = 0; ii < params.nx; ii++)
     {
+      const int y_n = (jj + 1) % params.ny;
+      const int x_e = (ii + 1) % params.nx;
+      const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
+      const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
+
+      const float speed0 = cells[ii + jj*params.nx].speeds[0];
+      const float speed1 = cells[x_w + jj*params.nx].speeds[1];
+      const float speed2 = cells[ii + y_s*params.nx].speeds[2];
+      const float speed3 = cells[x_e + jj*params.nx].speeds[3];
+      const float speed4 = cells[ii + y_n*params.nx].speeds[4];
+      const float speed5 = cells[x_w + y_s*params.nx].speeds[5];
+      const float speed6 = cells[x_e + y_s*params.nx].speeds[6];
+      const float speed7 = cells[x_e + y_n*params.nx].speeds[7];
+      const float speed8 = cells[x_w + y_n*params.nx].speeds[8];
       /* if the cell contains an obstacle */
       if (obstacles[jj*params.nx + ii])
       {
         /* called after propagate, so taking values from scratch space
         ** mirroring, and writing into main grid */
-        cells[ii + jj*params.nx].speeds[1] = tmp_cells[ii + jj*params.nx].speeds[3];
-        cells[ii + jj*params.nx].speeds[2] = tmp_cells[ii + jj*params.nx].speeds[4];
-        cells[ii + jj*params.nx].speeds[3] = tmp_cells[ii + jj*params.nx].speeds[1];
-        cells[ii + jj*params.nx].speeds[4] = tmp_cells[ii + jj*params.nx].speeds[2];
-        cells[ii + jj*params.nx].speeds[5] = tmp_cells[ii + jj*params.nx].speeds[7];
-        cells[ii + jj*params.nx].speeds[6] = tmp_cells[ii + jj*params.nx].speeds[8];
-        cells[ii + jj*params.nx].speeds[7] = tmp_cells[ii + jj*params.nx].speeds[5];
-        cells[ii + jj*params.nx].speeds[8] = tmp_cells[ii + jj*params.nx].speeds[6];
+        tmp_cells[ii + jj*params.nx].speeds[0] = speed0;
+        tmp_cells[ii + jj*params.nx].speeds[1] = speed3;
+        tmp_cells[ii + jj*params.nx].speeds[2] = speed4;
+        tmp_cells[ii + jj*params.nx].speeds[3] = speed1;
+        tmp_cells[ii + jj*params.nx].speeds[4] = speed2;
+        tmp_cells[ii + jj*params.nx].speeds[5] = speed7;
+        tmp_cells[ii + jj*params.nx].speeds[6] = speed8;
+        tmp_cells[ii + jj*params.nx].speeds[7] = speed5;
+        tmp_cells[ii + jj*params.nx].speeds[8] = speed6;
       }
       /* don't consider occupied cells */
       else 
@@ -394,12 +409,33 @@ float collision(const t_param params, t_speed* cells, t_speed* tmp_cells, int* o
                                          - u_sq / (2.f * c_sq));
 
         /* relaxation step */
-        for (int kk = 0; kk < NSPEEDS; kk++)
-        {
-          cells[ii + jj*params.nx].speeds[kk] = tmp_cells[ii + jj*params.nx].speeds[kk]
+          tmp_cells[ii + jj*params.nx].speeds[0] = speed0
                                                   + params.omega
-                                                  * (d_equ[kk] - tmp_cells[ii + jj*params.nx].speeds[kk]);
-        }
+                                                  * (d_equ[0] - speed0);
+          tmp_cells[ii + jj*params.nx].speeds[1] = speed1
+                                                  + params.omega
+                                                  * (d_equ[1] - speed1);
+          tmp_cells[ii + jj*params.nx].speeds[2] = speed2
+                                                  + params.omega
+                                                  * (d_equ[2] - speed2);
+          tmp_cells[ii + jj*params.nx].speeds[3] = speed3
+                                                  + params.omega
+                                                  * (d_equ[3] - speed3);
+          tmp_cells[ii + jj*params.nx].speeds[4] = speed4
+                                                  + params.omega
+                                                  * (d_equ[4] - speed4);
+          tmp_cells[ii + jj*params.nx].speeds[5] = speed5
+                                                  + params.omega
+                                                  * (d_equ[5] - speed5);
+          tmp_cells[ii + jj*params.nx].speeds[6] = speed6
+                                                  + params.omega
+                                                  * (d_equ[6] - speed6);
+          tmp_cells[ii + jj*params.nx].speeds[7] = speed7
+                                                  + params.omega
+                                                  * (d_equ[7] - speed7);
+          tmp_cells[ii + jj*params.nx].speeds[8] = speed8
+                                                  + params.omega
+                                                  * (d_equ[8] - speed8);
         
         /* accumulate the norm of x- and y- velocity components */
         tot_u += sqrtf((u_x * u_x) + (u_y * u_y));
