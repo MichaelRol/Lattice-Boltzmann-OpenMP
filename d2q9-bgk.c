@@ -466,7 +466,8 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
       
       }
       /* accumulate the norm of x- and y- velocity components */
-      tot_u = (!obstacles[jj*params.nx + ii]) ? ( tot_u + sqrtf((u_x * u_x) + (u_y * u_y))) : (tot_u + 0);
+      //tot_u = (!obstacles[jj*params.nx + ii]) ? ( tot_u + sqrtf((u_x * u_x) + (u_y * u_y))) : (tot_u + 0);
+      tot_u = tot_u + (sqrtf((u_x * u_x) + (u_y * u_y))*obstacles[jj*params.nx + ii]);
       /* increase counter of inspected cells */
        
       tot_cells = (!obstacles[jj*params.nx + ii]) ? (tot_cells + 1) : (tot_cells + 0);
