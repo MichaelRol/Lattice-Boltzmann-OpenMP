@@ -4,11 +4,7 @@
 #PBS -j oe
 #PBS -o d2q9-bgk.out
 #PBS -q veryshort
-<<<<<<< HEAD
-#PBS -l nodes=1:ppn=16,walltime=00:10:00
-=======
 #PBS -l nodes=1:ppn=16,walltime=00:00:30
->>>>>>> eee5d5cc7adb07d647a059ee9ab3680fb85862e2
 
 # Change the working directory (default is home directory)
 cd "$PBS_O_WORKDIR"
