@@ -287,7 +287,7 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
   const float w2 = 1.f / 36.f; /* weighting factor */
 
   int    tot_cells = 0;  /* no. of cells used in calculation */
-  float tot_u;          /* accumulated magnitudes of velocity for each cell */
+  float tot_u = 0.f;          /* accumulated magnitudes of velocity for each cell */
 
   /* initialise */
   tot_u = 0.f;
