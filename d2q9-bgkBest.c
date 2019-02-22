@@ -183,7 +183,6 @@ int main(int argc, char* argv[]) {
   float w1 = params.density      / 9.f;
   float w2 = params.density      / 36.f;
   
-  #pragma omp parallel for
   for (int jj = 0; jj < params.ny; jj++) {
     for (int ii = 0; ii < params.nx; ii++) {
       /* centre */
@@ -618,7 +617,6 @@ int initialise(const char* restrict paramfile, const char* restrict obstaclefile
   if (*obstacles_ptr == NULL) die("cannot allocate column memory for obstacles", __LINE__, __FILE__);
 
   /* first set all cells in obstacle array to zero */
-  #pragma omp parallel for
   for (int jj = 0; jj < params->ny; jj++) {
     for (int ii = 0; ii < params->nx; ii++) {
       (*obstacles_ptr)[ii + jj*params->nx] = 0;
