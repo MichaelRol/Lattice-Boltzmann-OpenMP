@@ -381,41 +381,6 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
     #pragma omp simd
     for (int ii = 0; ii < params.nx; ii++) {
 
-      // /* determine indices of axis-direction neighbours
-      // ** respecting periodic boundary conditions (wrap around) */
-      // const int y_n = (jj + 1) % params.ny;
-      // const int x_e = (ii + 1) % params.nx;
-      // const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
-      // const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
-      // /* propagate densities from neighbouring cells, following
-      // ** appropriate directions of travel and writing into
-      // ** scratch space grid */
-      // tmp_cells->speeds0[ii + jj*params.nx] = cells->speeds0[ii + jj*params.nx]; /* central cell, no movement */
-      // tmp_cells->speeds1[ii + jj*params.nx] = cells->speeds1[x_w + jj*params.nx]; /* east */
-      // tmp_cells->speeds2[ii + jj*params.nx] = cells->speeds2[ii + y_s*params.nx]; /* north */
-      // tmp_cells->speeds3[ii + jj*params.nx] = cells->speeds3[x_e + jj*params.nx]; /* west */
-      // tmp_cells->speeds4[ii + jj*params.nx] = cells->speeds4[ii + y_n*params.nx]; /* south */
-      // tmp_cells->speeds5[ii + jj*params.nx] = cells->speeds5[x_w + y_s*params.nx]; /* north-east */
-      // tmp_cells->speeds6[ii + jj*params.nx] = cells->speeds6[x_e + y_s*params.nx]; /* north-west */
-      // tmp_cells->speeds7[ii + jj*params.nx] = cells->speeds7[x_e + y_n*params.nx]; /* south-west */
-      // tmp_cells->speeds8[ii + jj*params.nx] = cells->speeds8[x_w + y_n*params.nx]; /* south-east */
-
-      /* if the cell contains an obstacle */
-      if (obstacles[jj*params.nx + ii]) {
-        /* called after propagate, so taking values from scratch space
-        ** mirroring, and writing into main grid */
-        cells->speeds1[ii + jj*params.nx] = tmp_cells->speeds3[ii + jj*params.nx];
-        cells->speeds2[ii + jj*params.nx] = tmp_cells->speeds4[ii + jj*params.nx];
-        cells->speeds3[ii + jj*params.nx] = tmp_cells->speeds1[ii + jj*params.nx];
-        cells->speeds4[ii + jj*params.nx] = tmp_cells->speeds2[ii + jj*params.nx];
-        cells->speeds5[ii + jj*params.nx] = tmp_cells->speeds7[ii + jj*params.nx];
-        cells->speeds6[ii + jj*params.nx] = tmp_cells->speeds8[ii + jj*params.nx];
-        cells->speeds7[ii + jj*params.nx] = tmp_cells->speeds5[ii + jj*params.nx];
-        cells->speeds8[ii + jj*params.nx] = tmp_cells->speeds6[ii + jj*params.nx];
-      }
-      /* don't consider occupied cells */
-      if (!obstacles[ii + jj*params.nx]) {
-        /* compute local density total */
         float local_density = 0.f;
 
         local_density += tmp_cells->speeds0[ii + jj*params.nx];
@@ -444,6 +409,23 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
                          + tmp_cells->speeds7[ii + jj*params.nx]
                          + tmp_cells->speeds8[ii + jj*params.nx]))
                      / local_density;
+
+      /* if the cell contains an obstacle */
+      if (obstacles[jj*params.nx + ii]) {
+        /* called after propagate, so taking values from scratch space
+        ** mirroring, and writing into main grid */
+        cells->speeds1[ii + jj*params.nx] = tmp_cells->speeds3[ii + jj*params.nx];
+        cells->speeds2[ii + jj*params.nx] = tmp_cells->speeds4[ii + jj*params.nx];
+        cells->speeds3[ii + jj*params.nx] = tmp_cells->speeds1[ii + jj*params.nx];
+        cells->speeds4[ii + jj*params.nx] = tmp_cells->speeds2[ii + jj*params.nx];
+        cells->speeds5[ii + jj*params.nx] = tmp_cells->speeds7[ii + jj*params.nx];
+        cells->speeds6[ii + jj*params.nx] = tmp_cells->speeds8[ii + jj*params.nx];
+        cells->speeds7[ii + jj*params.nx] = tmp_cells->speeds5[ii + jj*params.nx];
+        cells->speeds8[ii + jj*params.nx] = tmp_cells->speeds6[ii + jj*params.nx];
+      }
+      /* don't consider occupied cells */
+      if (!obstacles[ii + jj*params.nx]) {
+        /* compute local density total */
 
         /* velocity squared */
         const float u_sq = u_x * u_x + u_y * u_y;
