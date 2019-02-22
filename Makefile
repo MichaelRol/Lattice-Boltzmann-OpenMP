@@ -1,6 +1,6 @@
 # Makefile
 
-EXE=d2q9-bgk
+EXE=d2q9-bgkWORKING
 
 CC=icc
 CFLAGS= -std=c99 -Wall -Ofast -xAVX -qopenmp
