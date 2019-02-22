@@ -545,12 +545,10 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
         //                  + cells[ii + jj*params.nx].speeds[7]
         //                  + cells[ii + jj*params.nx].speeds[8]))
         //              / local_density;
-        /* accumulate the norm of x- and y- velocity components */
-        tot_u += sqrtf((u_x * u_x) + (u_y * u_y));
-        /* increase counter of inspected cells */
-        ++tot_cells;
       
       }
+      tot_u += (!obstacles[jj*params.nx + ii]) ? sqrtf((u_x * u_x) + (u_y * u_y)) : 0;
+      tot_cells += (!obstacles[jj*params.nx + ii]) ? 1 : 0;
     }
   }
 
