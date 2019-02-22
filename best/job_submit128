@@ -16,7 +16,7 @@ echo "PBS job ID is: $PBS_JOBID"
 echo "This jobs runs on the following machines: $(cat "$PBS_NODEFILE" | uniq)"
 echo
 
-export OMP_NUM_THREADS=12
+export OMP_NUM_THREADS=11
 export OMP_PROC_BIND=true
 
 # Run the executable
