@@ -305,7 +305,7 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
   __assume_aligned(tmp_cells->speeds6, 64);
   __assume_aligned(tmp_cells->speeds7, 64);
   __assume_aligned(tmp_cells->speeds8, 64);
-  __assume_aligned(obstacles, 64);
+  __assume_aligned(obstacles, 64);  
 
   /* loop over the cells in the grid
   ** NB the collision step is called after
