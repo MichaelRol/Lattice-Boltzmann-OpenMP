@@ -183,8 +183,8 @@ int main(int argc, char* argv[]) {
   float w1 = params.density      / 9.f;
   float w2 = params.density      / 36.f;
   
+  #pragma omp parallel for
   for (int jj = 0; jj < params.ny; jj++) {
-    #pragma omp simd
     for (int ii = 0; ii < params.nx; ii++) {
       /* centre */
       cells->speeds0[ii + jj*params.nx] = w0;
@@ -239,6 +239,8 @@ int main(int argc, char* argv[]) {
 
 float timestep(const t_param params, t_speeds* restrict cells, t_speeds* restrict tmp_cells, int* restrict obstacles) {
   accelerate_flow(params, cells, obstacles);
+  //propagate(params, cells, tmp_cells);
+  // rebound(params, cells, tmp_cells, obstacles);
   const float av = collision(params, cells, tmp_cells, obstacles);
   return av;
 }
@@ -312,6 +314,7 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
   ** NB the collision step is called after
   ** the propagate step and so values of interest
   ** are in the scratch-space grid */
+  #pragma omp parallel for reduction(+:tot_cells, tot_u)
   for (int jj = 0; jj < params.ny; jj++) {
     #pragma omp simd
     for (int ii = 0; ii < params.nx; ii++) {
@@ -378,13 +381,9 @@ float collision(const t_param params, t_speeds* restrict cells, t_speeds* restri
       /* don't consider occupied cells */
       else {
         /* velocity squared */
-      const float u_sq = u_x * u_x + u_y * u_y;
-      const float u_sqhalfc_sq = u_sq * halfc_sq;
-      
-      const int y_n = (jj + 1) % params.ny;
-      const int x_e = (ii + 1) % params.nx;
-      const int y_s = (jj == 0) ? (jj + params.ny - 1) : (jj - 1);
-      const int x_w = (ii == 0) ? (ii + params.nx - 1) : (ii - 1);
+        const float u_sq = u_x * u_x + u_y * u_y;
+        const float u_sqhalfc_sq = u_sq * halfc_sq;
+
         /* directional velocity components */
         float u[NSPEEDS];
         u[1] =   u_x;        /* east */
@@ -489,7 +488,6 @@ float av_velocity(const t_param params, t_speeds* restrict cells, int* restrict 
 
   /* loop over all non-blocked cells */
   for (int jj = 0; jj < params.ny; jj++) {
-    #pragma omp simd
     for (int ii = 0; ii < params.nx; ii++) {
       /* ignore occupied cells */
       if (!obstacles[ii + jj*params.nx]) {
@@ -618,6 +616,7 @@ int initialise(const char* restrict paramfile, const char* restrict obstaclefile
   if (*obstacles_ptr == NULL) die("cannot allocate column memory for obstacles", __LINE__, __FILE__);
 
   /* first set all cells in obstacle array to zero */
+  #pragma omp parallel for
   for (int jj = 0; jj < params->ny; jj++) {
     for (int ii = 0; ii < params->nx; ii++) {
       (*obstacles_ptr)[ii + jj*params->nx] = 0;
